@@ -64,7 +64,7 @@ pre {
 }
 
 img {
-	max-width:100%;
+  max-width: 75%;
 }
 
 hr {
@@ -154,7 +154,13 @@ strong, b {
 }
 
 .post ul, .project ul, .post ol  {
-	//list-style-position: inside;
+  list-style-position: inside;
+  text-indent: 3%;
+}
+
+.post ul ul, .project ul ul, .post ol ol, .post ol ul  {
+  list-style-position: inside;
+  text-indent: 6%;
 }
 
 main {
