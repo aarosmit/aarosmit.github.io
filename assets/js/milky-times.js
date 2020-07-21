@@ -105,11 +105,11 @@ function createTable () {
 	var th2 = th.insertCell(2);
 	var th3 = th.insertCell(3);
 	var th4 = th.insertCell(4);
-	th0.innerHTML = '| date-new-moon |';
-	th1.innerHTML = '| sun-rise |';
-	th2.innerHTML = '| sun-set |';
-	th3.innerHTML = '| milky-rise |';
-  th4.innerHTML = '| milky-set |';
+	th0.innerHTML = '\\ date-new-moon /';
+	th1.innerHTML = '\\ sun-rise /';
+	th2.innerHTML = '\\ sun-set /';
+	th3.innerHTML = '\\ milky-rise /';
+  th4.innerHTML = '\\ milky-set /';
 	for (i = 0; i < months; i++) {
     var tr = table.insertRow();
     var td0 = tr.insertCell(0);
