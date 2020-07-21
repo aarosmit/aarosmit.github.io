@@ -1,9 +1,6 @@
 ---
 layout: post
 title: The best times to view the milky way
-description: This is a tool for determining the best times for viewing the milky way.
-summary: This is a tool for determining the best times for viewing the milky way.
-tags: [tool, guide]
 ---
 
 **Click [here]({{ site.baseurl }}{% link _pages/milky.md %}) to use the tool.**
