@@ -208,10 +208,17 @@ figcaption {
 }
 
 table {
-  font-family: monospace;
-  text-align: center;
+  // font-family: monospace;
+  // text-align: center;
+  border-collapse: collapse;
 }
 
 th {
   font-weight: bold;
+}
+
+th,td {
+  // border: 1px solid;
+  padding-left: 5px;
+  padding-right: 5px;
 }

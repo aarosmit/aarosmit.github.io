@@ -80,7 +80,7 @@ function calcMilkyData () {
 
 function createStatements () {
   info = document.createElement('p');
-  info.style.cssText = 'text-align: center; font-family: monospace;';
+  info.style.cssText = 'text-align: center; font-family: monospace; width: 75%; margin-left:auto; margin-right:auto;';
   let sumRiseAz = 0, sumSetAz = 0;
   console.log(Math.max.apply(Math, milkyAlts));
   for (i = 0; i < milkyRiseAzs.length; i++) {
@@ -105,11 +105,11 @@ function createTable () {
 	var th2 = th.insertCell(2);
 	var th3 = th.insertCell(3);
 	var th4 = th.insertCell(4);
-	th0.innerHTML = '\\ date-new-moon /';
-	th1.innerHTML = '\\ sun-rise /';
-	th2.innerHTML = '\\ sun-set /';
-	th3.innerHTML = '\\ milky-rise /';
-  th4.innerHTML = '\\ milky-set /';
+	th0.innerHTML = 'date-new-moon';
+	th1.innerHTML = 'sun-rise';
+	th2.innerHTML = 'sun-set';
+	th3.innerHTML = 'milky-rise';
+  th4.innerHTML = 'milky-set';
 	for (i = 0; i < months; i++) {
     var tr = table.insertRow();
     var td0 = tr.insertCell(0);
