@@ -98,7 +98,8 @@ function createStatements () {
 function createTable () {
   table = document.createElement('table');
   table.style.cssText = 'font-family: monospace; text-align: center; margin-left:auto; margin-right:auto;';
-  var th = table.insertRow();
+  var thead = table.createTHead();
+  var th = thead.insertRow();
   th.style.cssText = 'font-weight: bold;';
   var th0 = th.insertCell(0);
 	var th1 = th.insertCell(1);
@@ -110,8 +111,9 @@ function createTable () {
 	th2.innerHTML = 'sun-set';
 	th3.innerHTML = 'milky-rise';
   th4.innerHTML = 'milky-set';
+  var tbody = table.createTBody();
 	for (i = 0; i < months; i++) {
-    var tr = table.insertRow();
+    var tr = tbody.insertRow();
     var td0 = tr.insertCell(0);
     td0.style.cssText = 'text-align: center;';
     var td1 = tr.insertCell(1);
@@ -123,9 +125,9 @@ function createTable () {
 		td2.innerHTML = allData[i].sunset.date.toLocaleTimeString('en-US', {timeZone: queryTZ, hour: '2-digit', minute: '2-digit', hour12: false});
 		td3.innerHTML = allData[i].milkyRiseAlt.date.toLocaleTimeString('en-US', {timeZone: queryTZ, hour: '2-digit', minute: '2-digit', hour12: false});
     td4.innerHTML = allData[i].milkySetAlt.date.toLocaleTimeString('en-US', {timeZone: queryTZ, hour: '2-digit', minute: '2-digit', hour12: false});
-    if (i % 2 === 0) {
-      tr.style.cssText = 'background-color: #e6f5f4';
-    };
+    // if (i % 2 === 0) {
+    //   tr.style.cssText = 'background-color: #e6f5f4';
+    // };
   };
 	body.appendChild(table);
 };
