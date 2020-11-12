@@ -1,6 +1,7 @@
 ---
 layout: post
 title: The best times to view the milky way
+updated: 2020-11-12
 ---
 
 **Click [here]({{ site.baseurl }}{% link _pages/milky.md %}) to use the tool.**
