@@ -1,5 +1,5 @@
 *,:after,:before {
-	box-sizing:border-box;
+	// box-sizing:border-box;
 	background-color:inherit;
 	color:inherit;
 	margin:0;
@@ -35,7 +35,8 @@ pre {
 }
 
 .post h1, .post h2, .post h3, .post h4 {
-	margin: 1rem 0;
+  margin: 1rem 0;
+  margin-bottom: 0.5rem;
 }
 
 .post h2:first-child, .project h2:first-child, .photo h2:first-child {
@@ -105,7 +106,8 @@ blockquote {
 
 h1,h2,h3,h4,h5 {
 	line-height: 1;
-	margin: 1rem 0;
+  margin: 1rem 0;
+  margin-bottom: 0.5rem;
 	font-weight: 600;
 }
 
@@ -156,6 +158,7 @@ strong, b {
 .post ul, .project ul, .post ol  {
   list-style-position: inside;
   text-indent: 3%;
+  margin: 0.5rem 0;
 }
 
 .post ul ul, .project ul ul, .post ol ol, .post ol ul  {
@@ -211,6 +214,7 @@ table {
   // font-family: monospace;
   // text-align: center;
   border-collapse: collapse;
+  margin: 0.5rem 0;
 }
 
 th {
@@ -230,4 +234,24 @@ thead {
 
 tr:nth-child(even) {
   background-color: #e6f5f4;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+#search-container {
+  margin: 0.5rem 0;
+}
+
+form {
+  margin: 0.5rem 0;
+}
+
+input {
+  font-size: 1rem;
+  outline: none;
+  padding: 0.75rem;
+  background: rgb(236, 237, 238);
+  border: none;
 }

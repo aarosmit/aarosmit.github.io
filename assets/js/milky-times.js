@@ -80,7 +80,7 @@ function calcMilkyData () {
 
 function createStatements () {
   info = document.createElement('p');
-  info.style.cssText = 'text-align: center; font-family: monospace; width: 75%; margin-left:auto; margin-right:auto;';
+  info.style.cssText = 'text-align: center; font-family: monospace; width: 60%; margin-left:auto; margin-right:auto;';
   let sumRiseAz = 0, sumSetAz = 0;
   console.log(Math.max.apply(Math, milkyAlts));
   for (i = 0; i < milkyRiseAzs.length; i++) {
