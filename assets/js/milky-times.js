@@ -105,7 +105,7 @@ function createTable () {
 	var th1 = th.insertCell(1);
 	var th2 = th.insertCell(2);
 	var th3 = th.insertCell(3);
-	var th4 = th.insertCell(4);
+  var th4 = th.insertCell(4);
 	th0.innerHTML = 'date-new-moon';
 	th1.innerHTML = 'sun-rise';
 	th2.innerHTML = 'sun-set';
@@ -119,7 +119,7 @@ function createTable () {
     var td1 = tr.insertCell(1);
 		var td2 = tr.insertCell(2);
 		var td3 = tr.insertCell(3);
-		var td4 = tr.insertCell(4);
+    var td4 = tr.insertCell(4);
 		td0.innerHTML = allData[i].date.toDateString();
 		td1.innerHTML = allData[i].sunrise.date.toLocaleTimeString('en-US', {timeZone: queryTZ, hour: '2-digit', minute: '2-digit', hour12: false});
 		td2.innerHTML = allData[i].sunset.date.toLocaleTimeString('en-US', {timeZone: queryTZ, hour: '2-digit', minute: '2-digit', hour12: false});

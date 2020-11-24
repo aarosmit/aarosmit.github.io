@@ -16,13 +16,21 @@ body {
 }
 
 nav ul {
-    border-right: 1px solid #edf2f7;
+  border-right: 1px solid #edf2f7;
+}
+
+nav ul li a {
+  color: black;
+}
+
+section ul li a {
+  color: black;
 }
 
 a {
-    color: #000;
+    color: #1a73e8;
     text-decoration-skip-ink: auto;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 pre {
@@ -254,4 +262,9 @@ input {
   padding: 0.75rem;
   background: rgb(236, 237, 238);
   border: none;
+}
+
+#source {
+  margin: 0;
+  line-height: 1;
 }
