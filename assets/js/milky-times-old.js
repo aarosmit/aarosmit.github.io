@@ -44,7 +44,7 @@ function defineVars () {
 
 function findNewMoons () {
 	for (i = 0; i < months; i++) {
-		newmoons.push(Astronomy.MakeTime(new Date(Astronomy.SearchMoonPhase(0, time.tt + i * lunarperiod - (lunarperiod / 2), lunarperiod).date.setHours(0,0,0,0))));
+		newmoons.push(Astronomy.MakeTime(new Date(Astronomy.SearchMoonPhase(0, time.tt + i * lunarperiod - 7, lunarperiod).date.setHours(0,0,0,0))));
 		allData[i] = {
       date: newmoons[i].date,
 		};
@@ -78,29 +78,11 @@ function calcMilkyData () {
 	};
 };
 
-function calcMilkyMax () {
-  milkyMaxTime = [];
-  milkyMaxData = [];
-  for (i = 0; i < months; i++) {
-    milkyTimeMS = allData[i].milkySetAlt.date - allData[i].milkyRiseAlt.date
-    if (milkyTimeMS > 0) {
-      milkyTimeDay = milkyTimeMS / 1000 / 60 / 60 / 24;
-      milkyMaxTime[i] = Astronomy.MakeTime(allData[i].milkyRiseAlt.tt + milkyTimeDay / 2);
-      // milkyMaxData[i] = Astronomy.Horizon(milkyMaxTime[i], observer, corera, coredec, 'normal');
-    } else {
-      milkyTimeDay = 1 - milkyTimeMS / 1000 / 60 / 60 / 24;
-      milkyMaxTime[i] = Astronomy.MakeTime(allData[i].milkySetAlt.tt + (milkyTimeDay / 2));
-      // milkyMaxData[i] = Astronomy.Horizon(milkyMaxTime[i], observer, corera, coredec, 'normal');
-    }
-  }
-  // console.log(milkyMaxData);
-}
-
 function createStatements () {
   info = document.createElement('p');
   info.style.cssText = 'text-align: center; font-family: monospace; width: 60%; margin-left:auto; margin-right:auto;';
   let sumRiseAz = 0, sumSetAz = 0;
-  // console.log(Math.max.apply(Math, milkyAlts));
+  console.log(Math.max.apply(Math, milkyAlts));
   for (i = 0; i < milkyRiseAzs.length; i++) {
     sumRiseAz += milkyRiseAzs[i];
     sumSetAz += milkySetAzs[i];
@@ -124,13 +106,11 @@ function createTable () {
 	var th2 = th.insertCell(2);
 	var th3 = th.insertCell(3);
   var th4 = th.insertCell(4);
-  var th5 = th.insertCell(5);
 	th0.innerHTML = 'date-new-moon';
 	th1.innerHTML = 'sun-rise';
 	th2.innerHTML = 'sun-set';
 	th3.innerHTML = 'milky-rise';
   th4.innerHTML = 'milky-set';
-  th5.innerHTML = 'milky-max';
   var tbody = table.createTBody();
 	for (i = 0; i < months; i++) {
     var tr = tbody.insertRow();
@@ -140,16 +120,11 @@ function createTable () {
 		var td2 = tr.insertCell(2);
 		var td3 = tr.insertCell(3);
     var td4 = tr.insertCell(4);
-    var td5 = tr.insertCell(5);
 		td0.innerHTML = allData[i].date.toDateString();
 		td1.innerHTML = allData[i].sunrise.date.toLocaleTimeString('en-US', {timeZone: queryTZ, hour: '2-digit', minute: '2-digit', hour12: false});
 		td2.innerHTML = allData[i].sunset.date.toLocaleTimeString('en-US', {timeZone: queryTZ, hour: '2-digit', minute: '2-digit', hour12: false});
 		td3.innerHTML = allData[i].milkyRiseAlt.date.toLocaleTimeString('en-US', {timeZone: queryTZ, hour: '2-digit', minute: '2-digit', hour12: false});
     td4.innerHTML = allData[i].milkySetAlt.date.toLocaleTimeString('en-US', {timeZone: queryTZ, hour: '2-digit', minute: '2-digit', hour12: false});
-    td5.innerHTML = milkyMaxTime[i].date.toLocaleTimeString('en-US', {timeZone: queryTZ, hour: '2-digit', minute: '2-digit', hour12: false});
-    if (milkyMaxTime[i].date.toLocaleTimeString('en-US', {timeZone: queryTZ, hour: '2-digit', minute: '2-digit', hour12: false}).substring(0, 2) > allData[i].sunset.date.toLocaleTimeString('en-US', {timeZone: queryTZ, hour: '2-digit', minute: '2-digit', hour12: false}).substring(0, 2) || milkyMaxTime[i].date.toLocaleTimeString('en-US', {timeZone: queryTZ, hour: '2-digit', minute: '2-digit', hour12: false}).substring(0, 2) < allData[i].sunrise.date.toLocaleTimeString('en-US', {timeZone: queryTZ, hour: '2-digit', minute: '2-digit', hour12: false}).substring(0, 2)) {
-      tr.style.cssText = 'font-weight: 600;';
-    };
     // if (i % 2 === 0) {
     //   tr.style.cssText = 'background-color: #e6f5f4';
     // };
@@ -175,6 +150,7 @@ createForm();
 findNewMoons();
 calcSunData();
 calcMilkyData();
-calcMilkyMax();
 createStatements();
 createTable();
+
+console.log(queryTZ);
