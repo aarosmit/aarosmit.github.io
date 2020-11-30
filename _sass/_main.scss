@@ -7,7 +7,7 @@
 }
 
 body {
-  font-family: sans-serif;
+  font-family: 'Open Sans', sans-serif;
 	-webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
 	line-height:1.5;
@@ -16,8 +16,8 @@ body {
 }
 
 .post {
-  font-family: serif;
-  font-size: 1.1rem;
+  font-family: 'Lora', serif;
+  font-size: 1rem;
 }
 
 nav ul {
@@ -51,7 +51,7 @@ pre {
 .post h1, .post h2, .post h3, .post h4 {
   margin: 1rem 0;
   margin-bottom: 0.5rem;
-  font-family: sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .post h2:first-child, .project h2:first-child, .photo h2:first-child {
