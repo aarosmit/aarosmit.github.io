@@ -5,7 +5,7 @@ title: Milky Times
 
 - Created using [Astronomy Engine] and [tz-lookup].
 - All times are local to the query.
-- The **bold** rows indicate the best new moons to possibly view the milky way.
+- The **bold** and <a style="color:#e1515a;">red</a> rows indicate the best new moons to possibly view the milky way.
 
 <script src="/assets/js/astronomy.min.js"></script>
 <script src="/assets/js/tz.js"></script>

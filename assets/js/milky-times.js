@@ -148,7 +148,7 @@ function createTable () {
     td4.innerHTML = allData[i].milkySetAlt.date.toLocaleTimeString('en-US', {timeZone: queryTZ, hour: '2-digit', minute: '2-digit', hour12: false});
     td5.innerHTML = milkyMaxTime[i].date.toLocaleTimeString('en-US', {timeZone: queryTZ, hour: '2-digit', minute: '2-digit', hour12: false});
     if (milkyMaxTime[i].date.toLocaleTimeString('en-US', {timeZone: queryTZ, hour: '2-digit', minute: '2-digit', hour12: false}).substring(0, 2) > allData[i].sunset.date.toLocaleTimeString('en-US', {timeZone: queryTZ, hour: '2-digit', minute: '2-digit', hour12: false}).substring(0, 2) || milkyMaxTime[i].date.toLocaleTimeString('en-US', {timeZone: queryTZ, hour: '2-digit', minute: '2-digit', hour12: false}).substring(0, 2) < allData[i].sunrise.date.toLocaleTimeString('en-US', {timeZone: queryTZ, hour: '2-digit', minute: '2-digit', hour12: false}).substring(0, 2)) {
-      tr.style.cssText = 'font-weight: bold;';
+      tr.style.cssText = 'font-weight: bold; color: #E1515A;';
     };
     // if (i % 2 === 0) {
     //   tr.style.cssText = 'background-color: #e6f5f4';
