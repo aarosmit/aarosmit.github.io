@@ -16,7 +16,7 @@ body {
 }
 
 .post {
-  font-family: 'Merriweather', serif;
+  font-family: 'Source Serif Pro', serif;
   font-size: 1rem;
 }
 
@@ -59,8 +59,10 @@ pre {
 }
 
 .meta {
-  margin: 2rem 0;
-  font-family: 'Open Sans', sans-serif;
+  margin: 1rem 0;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 0.8rem;
+	font-weight: 700;
 }
 
 code,pre {
