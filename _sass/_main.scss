@@ -241,8 +241,11 @@ th {
 
 th,td {
   // border: 1px solid;
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	line-height: 1.15;
 }
 
 thead {

@@ -31,7 +31,7 @@ function defineVars () {
 	corera = 17 + 45 / 60 + 40.04 / 3600;
 	coredec = -29 - 0 / 60 - 28.1 / 3600;
 	lunarperiod = 29.93;
-	months = 36;
+	months = 24;
 	queryTZ = tzlookup(lat, long);
   time = Astronomy.MakeTime(new Date());
 	newmoons = [];
@@ -44,7 +44,7 @@ function defineVars () {
 
 function findNewMoons () {
 	for (i = 0; i < months; i++) {
-		newmoons.push(Astronomy.MakeTime(new Date(Astronomy.SearchMoonPhase(0, time.tt + i * lunarperiod - (lunarperiod / 2), lunarperiod).date.setHours(0,0,0,0))));
+    newmoons.push(Astronomy.MakeTime(new Date(Astronomy.SearchMoonPhase(0, time.tt + i * lunarperiod - (lunarperiod / 2), lunarperiod).date.setHours(0,0,0,0))));
 		allData[i] = {
       date: newmoons[i].date,
 		};
@@ -178,3 +178,14 @@ calcMilkyData();
 calcMilkyMax();
 createStatements();
 createTable();
+
+footer = document.createElement('p');
+mod = document.lastModified;
+console.log(mod);
+footer.style.cssText = 'text-align: center; font-family: sans-serif; font-weight: bold; font-size: 0.8rem;';
+footer.innerHTML = `Updated: ${mod}`;
+body.appendChild(footer);
+
+blank = document.createElement('br');
+// blank.innerHTML = '<br>';
+body.appendChild(blank);
