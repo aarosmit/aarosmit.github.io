@@ -20,7 +20,10 @@
 	},
 	"dependencies": {
 		"@highcharts/svelte": "^1.1.1",
+		"astronomy-engine": "^2.1.19",
 		"gh-pages": "^6.3.0",
-		"highcharts": "^11.4.8"
+		"highcharts": "^11.4.8",
+		"luxon": "^3.7.2",
+		"tz-lookup": "^6.1.25"
 	}
 }
