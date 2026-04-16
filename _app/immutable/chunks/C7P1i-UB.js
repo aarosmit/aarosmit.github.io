@@ -1,0 +1,1 @@
+import{Q as e}from"./DXCo9Q7K.js";e();
