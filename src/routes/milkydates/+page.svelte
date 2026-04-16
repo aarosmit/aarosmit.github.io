@@ -7,6 +7,8 @@
 
 <script>
 
+import { page } from '$app/state';
+
 import { base } from '$app/paths';
 
 const title = "Milky dates"
@@ -94,7 +96,8 @@ function interpolate (first, second) {
 
 <div class='inputs'>
 <form method="GET">
-    <input name="coords" bind:value={coords} placeholder='XX.XXX,-YY.YYY'> <button>Get link</button>
+    <input name="coords" bind:value={coords} placeholder='XX.XXX,-YY.YYY'> 
+    <button type="submit">Get link</button>
 </form>
 <!-- <input type=number bind:value={lat} min=-90 max=90 placeholder='XX.XXX'>
 <input type=number bind:value={long} min=-180 max=180 placeholder='-YY.YYY'> -->
