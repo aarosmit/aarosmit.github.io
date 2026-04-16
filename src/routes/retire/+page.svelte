@@ -7,29 +7,47 @@
 <script>
 
 import { page } from '$app/state';
+import { onMount } from 'svelte';
 
 import Highcharts from 'highcharts';
 // import ExportingModule from 'highcharts/modules/exporting';
 import { Chart } from '@highcharts/svelte';
+    import { beforeUpdate } from 'svelte';
 
 // ExportingModule(Highcharts);
 
-let ageCurrent = 1 * page.url.searchParams.get('ageCurrent') || 30;
-let currentRetireNum = 1 * page.url.searchParams.get('currentRetireNum') || 100000;
-let beforeStraightROR = 0.06;
-let afterStraightROR = 0.03;
-let contributions = 1 * page.url.searchParams.get('contributions') || 10000;
-let ageStopContributions = 1 * page.url.searchParams.get('ageStopContributions') || 60;
-let ageStartContributions = 1 * page.url.searchParams.get('ageStartContributions') || 30;
-let ageRetire = 1 * page.url.searchParams.get('ageRetire') || 60;
-let withdrawals = 1 * page.url.searchParams.get('withdrawals') || 50000;
-let ageFinal = 1 * page.url.searchParams.get('ageFinal') || 90;
-let marketAdjustment = 1 * page.url.searchParams.get('marketAdjustment') || 0;
-let haveSimsRan = false;
+let ageCurrent = null;
+let currentRetireNum = 0
+let contributions = 0
+let ageStopContributions = null
+let ageStartContributions = null
+let ageRetire = null
+let withdrawals = 0
+let ageFinal = null
+let marketAdjustment = null
+let stockPercentage = null
+let bondPercentage = null
+let cashPercentage = null
 
-let stockPercentage = 1 * page.url.searchParams.get('stockPercentage') || 80;
-let bondPercentage = 1 * page.url.searchParams.get('bondPercentage') || 20;
-let cashPercentage = 1 * page.url.searchParams.get('cashPercentage') || 0;
+onMount(() => {
+    ageCurrent = 1 * page.url.searchParams.get('ageCurrent') || 30;
+    ageCurrent = 1 * page.url.searchParams.get('ageCurrent') || 30;
+    currentRetireNum = 1 * page.url.searchParams.get('currentRetireNum') || 100000;
+    contributions = 1 * page.url.searchParams.get('contributions') || 10000;
+    ageStopContributions = 1 * page.url.searchParams.get('ageStopContributions') || 60;
+    ageStartContributions = 1 * page.url.searchParams.get('ageStartContributions') || 30;
+    ageRetire = 1 * page.url.searchParams.get('ageRetire') || 60;
+    withdrawals = 1 * page.url.searchParams.get('withdrawals') || 50000;
+    ageFinal = 1 * page.url.searchParams.get('ageFinal') || 90;
+    marketAdjustment = 1 * page.url.searchParams.get('marketAdjustment') || 0;
+    stockPercentage = 1 * page.url.searchParams.get('stockPercentage') || 80;
+    bondPercentage = 1 * page.url.searchParams.get('bondPercentage') || 20;
+    cashPercentage = 1 * page.url.searchParams.get('cashPercentage') || 0;
+})
+
+
+
+let haveSimsRan = false;
 
 let SandP = [0.1318,0.2083,0.1767,-0.1862,0.1217,0.1413,0.2268,-0.0797,0.2014,0.1569,-0.0668,0.1139,0.2119,0.1204,-0.0148,0.1232,0.2649,-0.3724,-0.0716,0.0911,0.0409,0.0131,0.2403,-0.2342,-0.156,-0.0968,0.1112,0.275,0.2378,0.2102,0.2856,-0.0432,0.06,0.013,0.2459,-0.0938,0.1323,0.0885,-0.0898,0.2521,0.1679,-0.0039,0.1068,0.1862,-0.1863,0.0725,-0.0236,0.011,-0.1862,0.0185,0.2509,-0.3247,-0.2579,0.1058,0.07,-0.0168,-0.1661,0.028,0.0858,-0.1253,0.0632,0.1157,0.1561,-0.0705,0.1489,0.0118,0.0327,0.334,-0.1265,-0.0008,0.2355,0.4088,-0.0384,0.0782,0.0932,0.1625,0.1224,0.0228,-0.1155,-0.2855,0.3065,0.1128,0.1407,0.0497,-0.2398,-0.1544,-0.0089,0.121,-0.3615,0.2511,0.4644,-0.1473,0.4528,-0.0531,-0.4225,-0.2084,-0.1267,0.4347,0.3233,0.0835,0.1556,0.1982,-0.0366,0.2265,0.1543,-0.1821,-0.0383,-0.0762,-0.3704,-0.0882,0.2114,-0.1152,-0.118,-0.05,-0.0054,-0.0136,0.0047,0.2812,-0.2678,-0.073,0.1708,0.2337,-0.1742,-0.0496,0.1209,0.1876,-0.1415,0.2275,0.1234,0.0173,-0.0089,0.0257,-0.1119,-0.0553,0.2114,-0.1223,0.078,0.0338,-0.0916,0.0731,0.271,-0.0876,-0.035,0.0001,-0.1151,0.2847,0.183,0.2279,0.0852,-0.2106,0.0422,0.047,-0.046,0.0278,0.0782]
 let SPY = [-0.3685,-0.2341,-0.2315,-0.1310,-0.1270,-0.0635,-0.0222,-0.0104,0.0050,0.0101,0.0136,0.0623,0.0721,0.0973,0.1261,0.1300,0.1336,0.1401,0.1465,0.1674,0.1724,0.1863,0.1919,0.2027,0.2139,0.2209,0.2300,0.2581,0.2665,0.2829,0.3035,0.3124,0.3461]
