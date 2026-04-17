@@ -4,7 +4,11 @@
 
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<h1>Welcome to my website</h1>
 
-<p>Visit <a href="{base}/retire">retire</a></p>
+<ol>
+    <li><a href={base}/milkydates>Milky dates</a></li>
+    <li><a href={base}/milkytimes>Milky times</a></li>
+    <li><a href={base}/retire>Retirement simulator</a></li>
+    <li><a href={base}/street>The cost of a street</a></li>
+</ol>

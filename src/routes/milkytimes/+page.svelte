@@ -8,10 +8,17 @@
 <script>
 
 import { page } from '$app/state';
+import { onMount } from 'svelte';
 
 import { base } from '$app/paths';
 
 const title = "Milky times";
+
+let coords = "";
+
+onMount(() => {
+  coords = page.url.searchParams.get('coords') || "";
+})
 
 // IMPORTING PACKAGES USED IN THE 'MILKY' CODE
 import { SearchMoonQuarter, NextMoonQuarter, Observer, SearchRiseSet, Horizon, MakeTime, Equator } from 'astronomy-engine';
@@ -26,7 +33,6 @@ let startDateStr = DateTime.fromJSDate(new Date).toISODate();
 // $: startDate = MakeTime((new Date(startDateStr)));
 // $: startDateChart = startDate.date * 1;
 let tzOffset = 0;
-let coords = '';
 let period = 3;
 // let observer = new Observer(35, -85, 0);
 let times = [];
@@ -395,7 +401,7 @@ $: weatherPromise = getData(coords);
 #error {
   text-align: center;
   color: '#e1515a';
-  font-family: 'Poppins';
+  font-family: monospace;
 }
 
 </style>

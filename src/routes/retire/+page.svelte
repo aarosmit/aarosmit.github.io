@@ -12,7 +12,6 @@ import { onMount } from 'svelte';
 import Highcharts from 'highcharts';
 // import ExportingModule from 'highcharts/modules/exporting';
 import { Chart } from '@highcharts/svelte';
-    import { beforeUpdate } from 'svelte';
 
 // ExportingModule(Highcharts);
 
@@ -288,18 +287,18 @@ $: chartOptions = {
 <table style="margin:0px auto;">
     <thead>
         <tr>
-            <th>Sims Ran</th>
-            <th>Sims Succeeded</th>
-            <th>Sims Failed</th>
-            <th>Success Rate</th>
+            <th>Ran</th>
+            <th>Succeeded</th>
+            <th>Failed</th>
+            <th>Rate</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
+        <tr style="text-align: center;">
             <td>{simsRan}</td>
             <td>{simsSucceeded}</td>
             <td>{simsFailed}</td>
-            <td>{Math.round(simsSucceeded / simsRan * 100)}%</td>
+            <td>{Math.round(simsSucceeded / simsRan * 100) || 0}%</td>
         </tr>
     </tbody>
 </table>

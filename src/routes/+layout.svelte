@@ -9,4 +9,8 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
+<p style="text-align:center;"><a style="color:#000000;" href="{base}/">HOME</a></p>
+
 {@render children()}
+
+<p style="text-align:center;"><a style="color:#000000;" href="{base}/">HOME</a></p>

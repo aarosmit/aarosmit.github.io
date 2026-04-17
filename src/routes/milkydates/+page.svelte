@@ -8,10 +8,16 @@
 <script>
 
 import { page } from '$app/state';
-
+import { onMount } from 'svelte';
 import { base } from '$app/paths';
 
 const title = "Milky dates"
+
+let coords = '';
+
+onMount(() => {
+  coords = page.url.searchParams.get('coords') || "";
+})
 
 // IMPORTING PACKAGES USED IN THE 'MILKY' CODE
 import { SearchMoonQuarter, NextMoonQuarter, Observer, SearchRiseSet, Horizon, MakeTime, Equator } from 'astronomy-engine';
@@ -24,7 +30,6 @@ let firstMoon = SearchMoonQuarter(new Date());
 let moonPhases = [firstMoon];
 // console.log(moonPhases);
 let allData = [];
-let coords = '';
 
 $: lat = coords.substring(0, coords.indexOf(',')) * 1;
 $: long = coords.substring(coords.indexOf(',') + 1, coords.length) * 1;
@@ -152,7 +157,7 @@ function interpolate (first, second) {
 <ol>
 <li>Created using <a href="https://www.npmjs.com/package/astronomy-engine">Astronomy Engine</a>, <a href="https://www.npmjs.com/package/tz-lookup">tz-lookup</a>, and <a href="https://www.npmjs.com/package/luxon">Luxon</a>.</li>
 <li>All times shown are local to the query.</li>
-<li>The <a style="color:#e1515a">**bold and red**</a> rows indicate the best new moons to possibly view the milky way.</li>
+<li>The <b><a style="color:#e1515a">bold and red</a></b> rows indicate the best new moons to possibly view the milky way.</li>
 <li>After choosing the best dates, you can use <a href="{base}/milkytimes">MILKY TIMES</a> to pinpoint the best times to view the milky way.</li>
 </ol>
 
@@ -190,7 +195,7 @@ input {
 }
 
 .milkydata {
-    font-family: 'Source Code Pro'; 
+    font-family: monospace; 
     text-align: center; 
     margin-left: auto; 
     margin-right: auto;
