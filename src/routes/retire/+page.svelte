@@ -96,7 +96,7 @@ if (!stock || !bond || stockPercentage + bondPercentage + cashPercentage != 100)
     simsRan = 0;
     simsSucceeded = 0;
     simsFailed = 0;
-    while (j < 500) {
+    while (j < 1000) {
         allGrowth.push({type: 'line', data: [currentRetireNum]})
         allContributions.data = [0]
         allWithdrawals.data = [0]
