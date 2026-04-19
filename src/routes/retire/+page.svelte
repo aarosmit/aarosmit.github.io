@@ -15,6 +15,8 @@ import { Chart } from '@highcharts/svelte';
 
 // ExportingModule(Highcharts);
 
+let yearCurrent = new Date().getFullYear()
+console.log(yearCurrent);
 let ageCurrent = null;
 let currentRetireNum = 0
 let contributions = 0
@@ -27,6 +29,10 @@ let marketAdjustment = null
 let stockPercentage = null
 let bondPercentage = null
 let cashPercentage = null
+
+
+
+
 
 onMount(() => {
     ageCurrent = 1 * page.url.searchParams.get('ageCurrent') || 30;
@@ -58,12 +64,13 @@ let VFINX = [-0.3708,-0.2398,-0.2321,-0.1606,-0.1337,-0.1204,-0.0836,-0.0633,-0.
 $: stock = SandP;
 $: bond = FBNDX;
 
-$: console.log(stock, bond)
+// $: console.log(stock, bond)
 
 $: yearlyValue = [currentRetireNum]
 
 let fireSim = [{
-    age: ageCurrent,            
+    age: ageCurrent,
+    year: yearCurrent,
     contribution: 0,
     withdrawal: 0,
     portfolioValue: currentRetireNum,
@@ -71,6 +78,22 @@ let fireSim = [{
     bondYear: 0,
     totalReturn: 0
 }]
+
+$: largeTransfers = [{
+    type: "",
+    year: 2026,
+    amount: 0
+}]
+
+function addTransfer () {
+    largeTransfers.push({
+        type: "",
+        year: 2026,
+        amount: 0
+    })
+}
+
+$: console.log(largeTransfers)
 
 let i = 0;
 let j = 0;
@@ -102,7 +125,8 @@ if (!stock || !bond || stockPercentage + bondPercentage + cashPercentage != 100)
         allWithdrawals.data = [0]
         i = 0
         fireSim = [{
-            age: ageCurrent,            
+            age: ageCurrent,
+            year: yearCurrent,            
             contribution: 0,
             withdrawal: 0,
             portfolioValue: currentRetireNum,
@@ -132,6 +156,7 @@ if (!stock || !bond || stockPercentage + bondPercentage + cashPercentage != 100)
             // console.log(stock.length)
             fireSim.push({
                 age: i + ageCurrent,
+                year: i + yearCurrent,
                 contribution: contribution,
                 withdrawal: withdrawal,
                 portfolioValue: Math.round(portfolioGrowth + contribution - withdrawal),
@@ -276,9 +301,18 @@ $: chartOptions = {
                 <td style="width:15em;"><input style="width:95%;" type="range" min="0" max="100" step="5" name="bondPercentage" required bind:value={bondPercentage}></td>
                 <td>{bondPercentage}%</td>
             </tr>
+            {#each largeTransfers as transfer}
+            <tr>
+                <td>{transfer.type}</td>
+                <td><input type="number" bind:value={transfer.amount}></td>
+                <td><input style="width:5em;" type="number" bind:value={transfer.year}></td>
+            </tr>
+            {/each}
         </tbody>
     </table>
-    <p style="text-align:center;"><button type="submit" on:click={runSims}>RUN</button></p>
+
+
+    <p style="text-align:center;"><button type="submit" on:click={runSims}>RUN</button><button on:click={() => addTransfer}>+</button></p>
 </form>
 
 

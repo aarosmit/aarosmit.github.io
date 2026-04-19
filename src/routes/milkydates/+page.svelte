@@ -128,15 +128,15 @@ function interpolate (first, second) {
 {#if data.milkyMaxTime.tt < data.sunSetTime.tt && data.milkyMaxTime.tt > data.sunRiseTime.tt}
   <tr>
     <td>{DateTime.fromJSDate(data.newMoonDate.date).setZone(queryTZ).toFormat("ccc LLL dd yyyy")}</td>
-    <td>{DateTime.fromJSDate(data.sunRiseTime.date).setZone(queryTZ).toLocaleString(DateTime.TIME_24_SIMPLE) + "-" + DateTime.fromJSDate(data.sunSetTime.date).setZone(queryTZ).toLocaleString(DateTime.TIME_24_SIMPLE)}</td>
-    <td>{DateTime.fromJSDate(data.milkyRise.date).setZone(queryTZ).toLocaleString(DateTime.TIME_24_SIMPLE) + "-" + DateTime.fromJSDate(data.milkySet.date).setZone(queryTZ).toLocaleString(DateTime.TIME_24_SIMPLE)}</td>
+    <td>{DateTime.fromJSDate(data.sunRiseTime.date).setZone(queryTZ).toLocaleString(DateTime.TIME_24_SIMPLE) + " - " + DateTime.fromJSDate(data.sunSetTime.date).setZone(queryTZ).toLocaleString(DateTime.TIME_24_SIMPLE)}</td>
+    <td>{DateTime.fromJSDate(data.milkyRise.date).setZone(queryTZ).toLocaleString(DateTime.TIME_24_SIMPLE) + " - " + DateTime.fromJSDate(data.milkySet.date).setZone(queryTZ).toLocaleString(DateTime.TIME_24_SIMPLE)}</td>
     <td>{DateTime.fromJSDate(data.milkyMaxTime.date).setZone(queryTZ).toLocaleString(DateTime.TIME_24_SIMPLE)}</td>
   </tr>
 {:else}
   <tr class="best">
   <td>{DateTime.fromJSDate(data.newMoonDate.date).setZone(queryTZ).toFormat("ccc LLL dd yyyy")}</td>
-  <td class='best'>{DateTime.fromJSDate(data.sunRiseTime.date).setZone(queryTZ).toLocaleString(DateTime.TIME_24_SIMPLE) + "-" + DateTime.fromJSDate(data.sunSetTime.date).setZone(queryTZ).toLocaleString(DateTime.TIME_24_SIMPLE)}</td>
-  <td>{DateTime.fromJSDate(data.milkyRise.date).setZone(queryTZ).toLocaleString(DateTime.TIME_24_SIMPLE) + "-" + DateTime.fromJSDate(data.milkySet.date).setZone(queryTZ).toLocaleString(DateTime.TIME_24_SIMPLE)}</td>
+  <td class='best'>{DateTime.fromJSDate(data.sunRiseTime.date).setZone(queryTZ).toLocaleString(DateTime.TIME_24_SIMPLE) + " - " + DateTime.fromJSDate(data.sunSetTime.date).setZone(queryTZ).toLocaleString(DateTime.TIME_24_SIMPLE)}</td>
+  <td>{DateTime.fromJSDate(data.milkyRise.date).setZone(queryTZ).toLocaleString(DateTime.TIME_24_SIMPLE) + " - " + DateTime.fromJSDate(data.milkySet.date).setZone(queryTZ).toLocaleString(DateTime.TIME_24_SIMPLE)}</td>
   <td>{DateTime.fromJSDate(data.milkyMaxTime.date).setZone(queryTZ).toLocaleString(DateTime.TIME_24_SIMPLE)}</td>
 </tr>
 {/if}

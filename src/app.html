@@ -22,6 +22,8 @@ body {
 	flex-wrap: wrap;
 	max-width: 50rem;
 	margin: 0rem auto;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
 	/* overflow: hidden; */
 }
 
@@ -44,5 +46,22 @@ select, option {
 	font-family: sans-serif;
 }
 
+h1:hover::before {
+	content: 'h1 ';
+	font-size: 0.6em;
+	opacity: 0.5;
+}
+
+h2:hover::before {
+	content: 'h2 ';
+	font-size: 0.6em;
+	opacity: 0.5;
+}
+
+h3:hover::before {
+	content: 'h3 ';
+	font-size: 0.6em;
+	opacity: 0.5;
+}
 
 </style>
