@@ -80,14 +80,12 @@ let fireSim = [{
 }]
 
 $: largeTransfers = [{
-    type: "",
     year: 2026,
     amount: 0
 }]
 
 function addTransfer () {
     largeTransfers = [...largeTransfers, {
-        type: "",
         year: 2026,
         amount: 0
     }]
@@ -96,6 +94,14 @@ function addTransfer () {
 function removeTransfer (index) {
     largeTransfers.splice(index, 1);
     largeTransfers = largeTransfers;
+}
+
+function contributionOrWithdrawal (amount) {
+    if (amount < 0) {
+        return "Withdrawal"
+    } else {
+        return "Contribution"
+    }
 }
 
 
@@ -143,17 +149,27 @@ if (!stock || !bond || stockPercentage + bondPercentage + cashPercentage != 100)
             let stockReturn = stock[Math.round(Math.random() * (stock.length - 1))]
             let bondReturn = bond[Math.round(Math.random() * (bond.length - 1))]
             let portfolioGrowth = (fireSim[i - 1].portfolioValue * (1 + stockReturn + marketAdjustment / 100) * stockPercentage / 100) + (fireSim[i - 1].portfolioValue * (1 + bondReturn + marketAdjustment / 100) * bondPercentage / 100) + (fireSim[i - 1].portfolioValue * cashPercentage / 100)
-            let contribution;
-            let withdrawal;
+            let contribution = 0;
+            let withdrawal = 0;
+
+            for (let k=0; k < largeTransfers.length; k++) {
+                if (largeTransfers[k].year === fireSim[i - 1].year) {
+                    if (largeTransfers[k].amount > 0) {
+                        contribution = contribution + largeTransfers[k].amount;
+                    } else {
+                        withdrawal = withdrawal - largeTransfers[k].amount;
+                    }
+            }}
+
             if (i + ageCurrent >= ageStartContributions && i + ageCurrent < ageStopContributions) {
-                contribution = contributions;
+                contribution = contribution + contributions;
             } else {
-                contribution = 0
+                contribution = contribution
             }
             if (i + ageCurrent >= ageRetire) {
-                withdrawal = withdrawals;
+                withdrawal = withdrawal + withdrawals;
             } else {
-                withdrawal = 0
+                withdrawal = withdrawal
             }
             // console.log(stockReturn)
             // yearlyValue[i + 1 - ageCurrent] = yearlyValue[i - ageCurrent] * (1 + stockReturn)
@@ -174,7 +190,7 @@ if (!stock || !bond || stockPercentage + bondPercentage + cashPercentage != 100)
             allWithdrawals.data.push(fireSim[i].withdrawal)
         }
         allSims.push(allGrowth[j])
-        console.log(fireSim)
+        console.log(allContributions, allWithdrawals)
         simsRan++;
 
         if (fireSim[i].portfolioValue > 0) {
@@ -310,7 +326,7 @@ $: chartOptions = {
                 <td>
                     <button on:click={addTransfer}>+</button>
                     <button on:click={() => removeTransfer(index)}>-</button>
-                    {transfer.type}
+                    {contributionOrWithdrawal(transfer.amount)}
                 </td>
                 <td><input type="number" bind:value={transfer.amount}></td>
                 <td><input style="width:5em;" type="number" bind:value={transfer.year}></td>
