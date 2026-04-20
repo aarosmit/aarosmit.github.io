@@ -86,14 +86,18 @@ $: largeTransfers = [{
 }]
 
 function addTransfer () {
-    largeTransfers.push({
+    largeTransfers = [...largeTransfers, {
         type: "",
         year: 2026,
         amount: 0
-    })
+    }]
 }
 
-$: console.log(largeTransfers)
+function removeTransfer (index) {
+    largeTransfers.splice(index, 1);
+    largeTransfers = largeTransfers;
+}
+
 
 let i = 0;
 let j = 0;
@@ -301,9 +305,13 @@ $: chartOptions = {
                 <td style="width:15em;"><input style="width:95%;" type="range" min="0" max="100" step="5" name="bondPercentage" required bind:value={bondPercentage}></td>
                 <td>{bondPercentage}%</td>
             </tr>
-            {#each largeTransfers as transfer}
+            {#each largeTransfers as transfer, index}
             <tr>
-                <td>{transfer.type}</td>
+                <td>
+                    <button on:click={addTransfer}>+</button>
+                    <button on:click={() => removeTransfer(index)}>-</button>
+                    {transfer.type}
+                </td>
                 <td><input type="number" bind:value={transfer.amount}></td>
                 <td><input style="width:5em;" type="number" bind:value={transfer.year}></td>
             </tr>
@@ -312,7 +320,7 @@ $: chartOptions = {
     </table>
 
 
-    <p style="text-align:center;"><button type="submit" on:click={runSims}>RUN</button><button on:click={() => addTransfer}>+</button></p>
+    <p style="text-align:center;"><button type="submit" on:click={runSims}>RUN</button></p>
 </form>
 
 
