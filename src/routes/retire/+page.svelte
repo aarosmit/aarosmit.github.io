@@ -81,13 +81,13 @@ let fireSim = [{
 
 $: largeTransfers = [{
     year: 2026,
-    amount: 0
+    amount: null
 }]
 
 function addTransfer () {
     largeTransfers = [...largeTransfers, {
         year: 2026,
-        amount: 0
+        amount: null
     }]
 }
 
@@ -99,8 +99,18 @@ function removeTransfer (index) {
 function contributionOrWithdrawal (amount) {
     if (amount < 0) {
         return "Withdrawal"
-    } else {
+    } else if (amount > 0) {
         return "Contribution"
+    } else {
+        return "Enter amount"
+    }
+}
+
+function randomTransfer () {
+    if (Math.random() < 0.5) {
+        return Math.round(Math.random()* 100) * 1000 * -1
+    } else {
+        return Math.round(Math.random()* 100) * 1000
     }
 }
 
@@ -326,10 +336,10 @@ $: chartOptions = {
                 <td>
                     <button on:click={addTransfer}>+</button>
                     <button on:click={() => removeTransfer(index)}>-</button>
-                    {contributionOrWithdrawal(transfer.amount)}
+                    <i style="font-size: 0.8em;">{contributionOrWithdrawal(transfer.amount)} ({transfer.year - yearCurrent} years from now)</i>
                 </td>
-                <td><input type="number" bind:value={transfer.amount}></td>
-                <td><input style="width:5em;" type="number" bind:value={transfer.year}></td>
+                <td><input type="number" placeholder={randomTransfer()} bind:value={transfer.amount}></td>
+                <td><input style="width:5em;" type="number" min={yearCurrent} bind:value={transfer.year}></td>
             </tr>
             {/each}
         </tbody>
