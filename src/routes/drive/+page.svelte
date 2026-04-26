@@ -7,11 +7,52 @@
 <script>
 
 import { page } from '$app/state';
-import { onMount } from 'svelte';
 
 import PocketBase from 'pocketbase';
-import { redirect } from '@sveltejs/kit';
 const pb = new PocketBase('https://db.aarosmit.com');
+
+
+// async function importData () {
+//     const response = await fetch('/src/lib/assets/go.json')
+//     const data = await response.json();
+//     let newRecord;
+//     let makeRecord;
+
+//     for (let i=0; i < data.length; i++) {
+//         // console.log(data[i])
+//         if (data[i].vehicle === "Cross" || data[i].vehicle === "Fit") {
+//             newRecord = {
+//                 vehicle: data[i].vehicle,
+//                 date: new Date(data[i].date),
+//                 odometer: data[i].distance,
+//                 cost: data[i].cost,
+//                 notes: data[i].notes
+//             }
+//             console.log(newRecord)
+//             makeRecord = await pb.collection('vehicles').create(newRecord)
+//         }
+
+//     }
+
+//     // let newData = {
+//     //     vehicle: selectedVehicle,
+//     //     date: date,
+//     //     odometer: odometer,
+//     //     cost: cost,
+//     //     notes: notes
+//     // }
+// }
+
+
+
+
+
+
+
+
+
+
+
 
 let records;
 let selectedVehicle = "Cross";
@@ -60,8 +101,8 @@ async function getRecords () {
         }
     }
 
-    console.log(records)
-    console.log(prevCrossRecord, prevFitRecord)
+    // console.log(records)
+    // console.log(prevCrossRecord, prevFitRecord)
     return records
 }
 
@@ -69,7 +110,7 @@ async function getRecords () {
 
 </script>
 
-
+<h1>Driving</h1>
 
 {#await getRecords()}
 
@@ -77,7 +118,7 @@ async function getRecords () {
     
 {:then records} 
 
-<form>
+<form style="height:100vh;">
 
 <table style="margin:0px auto;">
 <tbody>
@@ -129,6 +170,8 @@ async function getRecords () {
 <p style="text-align:center;"><button type="submit" on:click={createRecord(newRecord)}>Submit</button></p>
 
 </form>
+
+<h2>Last 30 days</h2>
 
 <table style="margin:0px auto;font-family:monospace;font-size:0.9rem;">
     <thead>
