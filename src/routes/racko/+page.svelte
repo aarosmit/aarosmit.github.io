@@ -16,7 +16,7 @@ let games;
 let timeFirstHand;
 let dateFirstHand;
 let numberInARowArray = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-let array = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+let array = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 let bestLatestHand;
 
 async function getRecords () {
@@ -56,9 +56,7 @@ async function getRecords () {
 
 <p>I have dealt {records.length} hands of Racko. I started dealing Racko hands on {dateFirstHand} at {timeFirstHand}.</p>
 
-<p>I dealt the best hand so far at {new Date(bestLatestHand.created).toLocaleTimeString()} on {new Date(bestLatestHand.created).toLocaleDateString()}.</p>
-
-<p>This is the hand: {bestLatestHand.rack}</p>
+<p>I dealt the latest best hand so far at {new Date(bestLatestHand.created).toLocaleTimeString()} on {new Date(bestLatestHand.created).toLocaleDateString()}.</p>
 
 <table style="font-family: monospace;text-align: center;margin-left: auto;margin-right: auto;font-size: 0.9rem;width:50%;">
     <thead>
@@ -74,6 +72,12 @@ async function getRecords () {
                 <td>{times}</td>
             {/each}
         </tr>
+        <tr><td colspan="15">-----</td></tr>
+        {#each bestLatestHand.rack as card}
+            <tr>
+                <td colspan="15">{card}</td>
+            </tr>
+        {/each}
     </tbody>
 </table>
     

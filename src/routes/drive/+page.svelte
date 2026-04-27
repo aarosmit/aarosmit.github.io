@@ -8,6 +8,7 @@
 
 import { page } from '$app/state';
 
+import Geolocation from "svelte-geolocation";
 import PocketBase from 'pocketbase';
 const pb = new PocketBase('https://db.aarosmit.com');
 
@@ -61,9 +62,20 @@ let oneMonthAgo = new Date(date - 2592000000).toISOString()
 let odometer;
 let cost;
 let notes;
+let coords = [];
+let saveCoords = true;
+let loggedCoords = [];
 let prevCrossRecord;
 let prevFitRecord;
 let prevSelectedRecord;
+
+$: console.log(saveCoords, loggedCoords)
+
+$: if (saveCoords) {
+    loggedCoords = [Math.round(coords[1]* 1000) / 1000, Math.round(coords[0]* 1000) / 1000]
+} else {
+    loggedCoords = null
+}
 
 $: if (selectedVehicle === "Cross") {
     prevSelectedRecord = prevCrossRecord;
@@ -76,6 +88,7 @@ $: newRecord = {
     date: date,
     odometer: odometer,
     cost: cost,
+    location: loggedCoords,
     notes: notes
 }
 
@@ -109,6 +122,8 @@ async function getRecords () {
 // $: console.log(prevSelectedRecord)
 
 </script>
+
+<Geolocation getPosition bind:coords />
 
 <h1>Driving</h1>
 
@@ -150,7 +165,7 @@ async function getRecords () {
 <tr>
     <td>Odometer</td>
     <td><input type="number" bind:value={odometer} min={prevSelectedRecord.odometer} placeholder={prevSelectedRecord.odometer}></td>
-    <td>Drove {odometer - prevSelectedRecord.odometer} miles</td>
+    <td>Drove {odometer - prevSelectedRecord.odometer || 0} miles</td>
 </tr>
 
 <tr>
@@ -163,6 +178,12 @@ async function getRecords () {
     <td>Notes</td>
     <td><input type="text" bind:value={notes} placeholder={prevSelectedRecord.notes}></td>
     <td>{notes}</td>
+</tr>
+
+<tr>
+    <td>Location</td>
+    <td><input style="text-align=center" type="checkbox" bind:checked={saveCoords}></td>
+    <td>{loggedCoords}</td>
 </tr>
 
 </tbody></table>
