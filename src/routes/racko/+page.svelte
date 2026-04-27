@@ -72,13 +72,13 @@ async function getRecords () {
                 <td>{times}</td>
             {/each}
         </tr>
-        <tr><td colspan="15">-----</td></tr>
-        {#each bestLatestHand.rack as card}
-            <tr>
-                <td colspan="15">{card}</td>
-            </tr>
-        {/each}
     </tbody>
 </table>
+
+<svg width="100%" height="60vh">
+    {#each bestLatestHand.rack.reverse() as card, i}
+        <text style="font-weight:bold;" x="{card / 1.5 + 30}%" y="{i * 5 + 10}%" fill="black">| {card} |</text>
+    {/each}
+</svg>
     
 {/await}
