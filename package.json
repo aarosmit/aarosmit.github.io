@@ -24,6 +24,7 @@
 		"astronomy-engine": "^2.1.19",
 		"gh-pages": "^6.3.0",
 		"highcharts": "^11.4.8",
+		"layerchart": "^1.0.13",
 		"luxon": "^3.7.2",
 		"pocketbase": "^0.26.8",
 		"tz-lookup": "^6.1.25"
