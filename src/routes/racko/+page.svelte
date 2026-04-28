@@ -48,13 +48,15 @@ async function getRecords () {
 
 </script>
 
-<h1>Dealing Racko</h1>
+<h1>Dealing Rack-O</h1>
 
 {#await getRecords()}
     <p style="text-align: center;">Getting data...</p>
 {:then records} 
 
-<p>I have dealt {records.length} hands of Racko. I started dealing Racko hands on {dateFirstHand} at {timeFirstHand}.</p>
+<p>I deal out a game of <a href="https://fgbradleys.com/wp-content/uploads/rules/Rack-O.pdf">Rack-O</a> every minute. I started dealing Rack-O games on {dateFirstHand} at {timeFirstHand}.</p>
+
+<p>I have dealt {records.length} games of Rack-O.</p>
 
 <p>I dealt the latest best hand so far at {new Date(bestLatestHand.created).toLocaleTimeString()} on {new Date(bestLatestHand.created).toLocaleDateString()}.</p>
 
@@ -77,7 +79,9 @@ async function getRecords () {
 
 <svg width="100%" height="60vh">
     {#each bestLatestHand.rack.reverse() as card, i}
-        <text style="font-weight:bold;" x="{card / 1.5 + 30}%" y="{i * 5 + 10}%" fill="black">| {card} |</text>
+        <text style="font-weight:bold;" font-size="{0.6+i/30}em" x="{22}%" y="{i * 3 + 10}%" fill="black">|‾</text>
+        <text style="font-weight:bold;" font-size="{0.6+i/30}em" x="{card / 1.5 + 25}%" y="{i * 3 + 10}%" fill="black">| {card} |</text>
+        <text style="font-weight:bold;" font-size="{0.6+i/30}em" x="{72}%" y="{i * 3 + 10}%" fill="black">‾|</text>
     {/each}
 </svg>
     

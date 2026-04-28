@@ -1,30 +1,122 @@
 <script>
 
-import { Line, LineChart, defaultChartPadding } from 'layerchart';
+import Highcharts from 'highcharts';
+import { Chart } from '@highcharts/svelte';
+
 import PocketBase from 'pocketbase';
 const pb = new PocketBase('https://db.aarosmit.com');
 
 let records;
-let chartData = [];
+$: selectedVehicle = "Fit";
+
+let odometerDataFit = {
+    type: "line",
+    data: []
+};
+let costDataFit = {
+    type: "line",
+    data: []
+};
+
+let odometerDataCross = {
+    type: "line",
+    data: []
+};
+let costDataCross = {
+    type: "line",
+    data: []
+};
 
 async function getRecords () {
     records = await pb.collection('vehicles').getFullList({
-        sort: 'created'
+        sort: 'date'
     });
-    
+    let cumCostCross = 0;
+    let cumCostFit = 0;
     for (let i = 0; i < records.length; i++) {
-        if (records[i].vehicle === "Cross") {
+        if (records[i].vehicle === "Fit") {
             if (records[i].odometer > 0) {
-            chartData.push({
-                date: records[i].date,
-                odometer: records[i].odometer
+            odometerDataFit.data.push({
+                x: new Date(records[i].date),
+                y: records[i].odometer
             })
         }}
+        if (records[i].vehicle === "Cross") {
+            if (records[i].odometer > 0) {
+            odometerDataCross.data.push({
+                x: new Date(records[i].date),
+                y: records[i].odometer
+            })
+        }}
+        if (records[i].vehicle === "Cross") {
+            if (records[i].cost > 0) {
+                cumCostCross = cumCostCross + records[i].cost
+                costDataCross.data.push({
+                    x: new Date(records[i].date),
+                    y: Math.round(cumCostCross)
+                })
+            }
+        }
+        if (records[i].vehicle === "Fit") {
+            if (records[i].cost > 0) {
+                cumCostFit = cumCostFit + records[i].cost
+                costDataFit.data.push({
+                    x: new Date(records[i].date),
+                    y: Math.round(cumCostFit)
+                })
+            }
+        }
     }
-
-    console.log(chartData)
-    // console.log(prevCrossRecord, prevFitRecord)
+    
     return records
+}
+
+$: chartOdometerOptions = {
+    title: {
+        text: "Odometer"
+    },
+    plotOptions: {
+        series: {
+            enableMouseTracking: true,
+            lineWidth: 1,
+            label: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            pointWidth: 10
+        }
+    },
+    xAxis: [{
+        type: "datetime"
+    }],
+    series: [odometerDataCross, odometerDataFit],
+    legend: {enabled: false}
+}
+
+$: chartCostOptions = {
+    title: {
+        text: "Cost"
+    },
+    plotOptions: {
+        series: {
+            enableMouseTracking: true,
+            lineWidth: 1,
+            label: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            pointWidth: 10
+        }
+    },
+    xAxis: [{
+        type: "datetime"
+    }],
+    series: [costDataCross, costDataFit],
+    legend: {enabled: false}
 }
 
 </script>
@@ -32,6 +124,13 @@ async function getRecords () {
 {#await getRecords()}
     <p>Getting data</p>
 {:then records} 
-    <p>Testing</p>
-    <LineChart {chartData} x="date" y="value" padding={defaultChartPadding({ right: 10 })} height={300} />
+    <Chart 
+        options={chartOdometerOptions} 
+        highcharts={Highcharts}
+    />
+    <Chart 
+        options={chartCostOptions} 
+        highcharts={Highcharts}
+    />
+
 {/await}
