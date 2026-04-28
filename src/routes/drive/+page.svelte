@@ -13,36 +13,30 @@ import PocketBase from 'pocketbase';
 const pb = new PocketBase('https://db.aarosmit.com');
 
 
-// async function importData () {
-//     const response = await fetch('/src/lib/assets/go.json')
-//     const data = await response.json();
-//     let newRecord;
-//     let makeRecord;
+async function importData () {
+   const response = await fetch('/src/lib/assets/fuel_4Runner_all.json')
+   const data = await response.json();
+   console.log(data)
+   let newRecord;
+   let makeRecord;
 
-//     for (let i=0; i < data.length; i++) {
-//         // console.log(data[i])
-//         if (data[i].vehicle === "Cross" || data[i].vehicle === "Fit") {
-//             newRecord = {
-//                 vehicle: data[i].vehicle,
-//                 date: new Date(data[i].date),
-//                 odometer: data[i].distance,
-//                 cost: data[i].cost,
-//                 notes: data[i].notes
-//             }
-//             console.log(newRecord)
-//             makeRecord = await pb.collection('vehicles').create(newRecord)
-//         }
-
+//    for (let i=0; i < data.length; i++) {
+//        console.log(data[i])
+//        if (data[i].vehicle === "Cross" || data[i].vehicle === "Fit") {
+//            newRecord = {
+//                vehicle: data[i].vehicle,
+//                date: new Date(data[i].date),
+//                odometer: data[i].distance,
+//                cost: data[i].cost,
+//                notes: data[i].notes
+//            }
+//            console.log(newRecord)
+//            makeRecord = await pb.collection('vehicles').create(newRecord)
+//        }
 //     }
+}
 
-//     // let newData = {
-//     //     vehicle: selectedVehicle,
-//     //     date: date,
-//     //     odometer: odometer,
-//     //     cost: cost,
-//     //     notes: notes
-//     // }
-// }
+importData()
 
 
 
