@@ -10,33 +10,49 @@ import { page } from '$app/state';
 
 import Geolocation from "svelte-geolocation";
 import PocketBase from 'pocketbase';
+  import { onMount } from 'svelte';
 const pb = new PocketBase('https://db.aarosmit.com');
 
 
-async function importData () {
-   const response = await fetch('/src/lib/assets/fuel_4Runner_all.json')
-   const data = await response.json();
-   console.log(data)
-   let newRecord;
-   let makeRecord;
+// async function importData () {
+//    const response = await fetch('/src/lib/assets/fuel_4Runner_all.json')
+//    const data = await response.json();
+//    console.log(data)
+//    let newRecord;
+//    let makeRecord;
+//    let odo;
+//    let notesImport;
 
 //    for (let i=0; i < data.length; i++) {
-//        console.log(data[i])
-//        if (data[i].vehicle === "Cross" || data[i].vehicle === "Fit") {
-//            newRecord = {
-//                vehicle: data[i].vehicle,
-//                date: new Date(data[i].date),
-//                odometer: data[i].distance,
-//                cost: data[i].cost,
-//                notes: data[i].notes
-//            }
-//            console.log(newRecord)
-//            makeRecord = await pb.collection('vehicles').create(newRecord)
+//     //    console.log(data[i])
+//     if (data[i].odometer === "") {
+//         odo = null
+//     } else {
+//         odo = data[i].odometer
+//     }
+//     if (data[i].notes === "") {
+//         notesImport = null
+//     } else {
+//         notesImport = data[i].notes
+//     }
+//         newRecord = {
+//             vehicle: "4Runner",
+//             date: new Date(data[i].date),
+//             odometer: odo,
+//             cost: Math.round((data[i].price * data[i].gallons) * 100) / 100,
+//             notes: notesImport
+//         }
+//         console.log(newRecord)
+//         makeRecord = await pb.collection('vehicles').create(newRecord)
 //        }
 //     }
-}
 
-// importData()
+// onMount(() => {
+//     importData()
+// }
+// )
+
+
 
 
 
@@ -64,7 +80,7 @@ let prevFitRecord;
 let prevSelectedRecord;
 let recordSubmitted = false;
 
-$: console.log(saveCoords, loggedCoords)
+// $: console.log(saveCoords, loggedCoords)
 
 $: if (saveCoords) {
     loggedCoords = [Math.round(coords[1]* 1000) / 1000, Math.round(coords[0]* 1000) / 1000]
@@ -129,7 +145,7 @@ async function getRecords () {
     
 {:then records} 
 
-<form style="height:100vh;">
+<form style="height:90vh;">
 
 <table style="margin:0px auto;">
 <tbody>
