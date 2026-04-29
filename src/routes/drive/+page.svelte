@@ -36,7 +36,7 @@ async function importData () {
 //     }
 }
 
-importData()
+// importData()
 
 
 
@@ -62,6 +62,7 @@ let loggedCoords = [];
 let prevCrossRecord;
 let prevFitRecord;
 let prevSelectedRecord;
+let recordSubmitted = false;
 
 $: console.log(saveCoords, loggedCoords)
 
@@ -88,6 +89,7 @@ $: newRecord = {
 
 async function createRecord (record) {
     await pb.collection('vehicles').create(record);
+    recordSubmitted = true;
 }
 
 async function getRecords () {
@@ -183,6 +185,12 @@ async function getRecords () {
 </tbody></table>
 
 <p style="text-align:center;"><button type="submit" on:click={createRecord(newRecord)}>Submit</button></p>
+
+{#if recordSubmitted}
+
+<p style="text-align:center;">Record submitted!</p>
+
+{/if}
 
 </form>
 
