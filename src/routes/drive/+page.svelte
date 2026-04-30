@@ -91,17 +91,17 @@ async function createRecord (record) {
 
 async function getRecords () {
     records = await pb.collection('vehicles').getFullList({
-        sort: '-created',
+        sort: '-date',
         filter: `date >= "${oneMonthAgo}"`
     });
     for (let i = 0; i < records.length; i++) {
-        if (records[i].vehicle === "Cross") {
+        if (records[i].vehicle === "Cross" && records[i].odometer > 0) {
             prevCrossRecord = records[i]
             break
         }
     }
     for (let i = 0; i < records.length; i++) {
-        if (records[i].vehicle === "Fit") {
+        if (records[i].vehicle === "Fit" && records[i].odometer > 0) {
             prevFitRecord = records[i]
             break
         }
