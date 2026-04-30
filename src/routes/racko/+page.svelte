@@ -25,7 +25,7 @@ async function getRecords () {
     });
     timeFirstHand = new Date(records[records.length - 1].created).toLocaleTimeString()
     dateFirstHand = new Date(records[records.length - 1].created).toLocaleDateString()
-    console.log(records, timeFirstHand)
+    // console.log(records, timeFirstHand)
     for (let i = 0; i < records.length; i++) {
         array[records[i].numberInARow]++;
     }
@@ -56,12 +56,15 @@ async function getRecords () {
 
 <p>I deal out a game of <a href="https://fgbradleys.com/wp-content/uploads/rules/Rack-O.pdf">Rack-O</a> every minute. I started dealing Rack-O games on {dateFirstHand} at {timeFirstHand}.</p>
 
-<p>I have dealt {records.length} games of Rack-O.</p>
+<p>Dealing a game of Rack-O consists of dealing four players 15 cards each. This simulation logs the best initial hand from each game and tallies it here, then visualizes the best hand dealt to date.</p>
 
-<p>I dealt the latest best hand so far at {new Date(bestLatestHand.created).toLocaleTimeString()} on {new Date(bestLatestHand.created).toLocaleDateString()}.</p>
+<p>I have dealt {records.length} games of Rack-O. I dealt the latest best hand so far at {new Date(bestLatestHand.created).toLocaleTimeString()} on {new Date(bestLatestHand.created).toLocaleDateString()}.</p>
 
 <table style="font-family: monospace;text-align: center;margin-left: auto;margin-right: auto;font-size: 0.9rem;width:50%;">
     <thead>
+        <tr>
+            <th colspan="15">CARDS IN A ROW</th>
+        </tr>
         <tr>
             {#each numberInARowArray as num}
                 <th>{num}</th>
