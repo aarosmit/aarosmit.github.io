@@ -17,7 +17,7 @@ const pb = new PocketBase('https://db.aarosmit.com');
 // IF MASS IMPORT NEEDED
 
 // async function importData () {
-//    const response = await fetch('/src/lib/assets/fuel_CRV_all.json')
+//    const response = await fetch('/src/lib/assets/car.json')
 //    const data = await response.json();
 //    console.log(data)
 //    let newRecord;
@@ -27,25 +27,15 @@ const pb = new PocketBase('https://db.aarosmit.com');
 
 //    for (let i=0; i < data.length; i++) {
 //     //    console.log(data[i])
-//     if (data[i].odometer === "") {
-//         odo = null
-//     } else {
-//         odo = data[i].odometer
-//     }
-//     if (data[i].notes === "") {
-//         notesImport = null
-//     } else {
-//         notesImport = data[i].notes
-//     }
+//     if (data[i].Fit) {
 //         newRecord = {
-//             vehicle: "2000 CRV",
-//             date: new Date(data[i].date_added),
-//             odometer: odo,
-//             cost: Math.round((data[i].price * data[i].gallons) * 100) / 100,
-//             notes: notesImport
+//             vehicle: "Fit",
+//             date: new Date(data[i].Date),
+//             cost: Math.round((data[i].Fit) * 100) / 100,
 //         }
 //         console.log(newRecord)
-//         makeRecord = await pb.collection('vehicles').create(newRecord)
+//     }
+//         // makeRecord = await pb.collection('vehicles').create(newRecord)
 //     }
 // }
 

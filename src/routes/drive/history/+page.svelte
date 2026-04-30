@@ -173,7 +173,7 @@ $: chartOdometerOptions = {
     plotOptions: {
         series: {
             enableMouseTracking: true,
-            lineWidth: 1,
+            lineWidth: 2,
             label: {
                 enabled: false
             },
@@ -214,7 +214,7 @@ $: chartCostOptions = {
         type: "datetime"
     }],
     series: [costDataCRV, costDataCorolla, costDataFit, costData4Runner, costDataCross],
-    legend: {enabled: false}
+    legend: {enabled: true}
 }
 
 </script>
