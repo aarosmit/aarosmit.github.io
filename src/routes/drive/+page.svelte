@@ -7,15 +7,17 @@
 <script>
 
 import { page } from '$app/state';
+import { base } from '$app/paths';
 
 import Geolocation from "svelte-geolocation";
 import PocketBase from 'pocketbase';
-  import { onMount } from 'svelte';
+import { onMount } from 'svelte';
 const pb = new PocketBase('https://db.aarosmit.com');
 
+// IF MASS IMPORT NEEDED
 
 // async function importData () {
-//    const response = await fetch('/src/lib/assets/fuel_4Runner_all.json')
+//    const response = await fetch('/src/lib/assets/fuel_CRV_all.json')
 //    const data = await response.json();
 //    console.log(data)
 //    let newRecord;
@@ -36,32 +38,21 @@ const pb = new PocketBase('https://db.aarosmit.com');
 //         notesImport = data[i].notes
 //     }
 //         newRecord = {
-//             vehicle: "4Runner",
-//             date: new Date(data[i].date),
+//             vehicle: "2000 CRV",
+//             date: new Date(data[i].date_added),
 //             odometer: odo,
 //             cost: Math.round((data[i].price * data[i].gallons) * 100) / 100,
 //             notes: notesImport
 //         }
 //         console.log(newRecord)
 //         makeRecord = await pb.collection('vehicles').create(newRecord)
-//        }
 //     }
+// }
 
 // onMount(() => {
 //     importData()
 // }
 // )
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -152,25 +143,21 @@ async function getRecords () {
 
 <tr>
     {#if selectedVehicle === "Cross"}
-    <td style="text-align:center;">
+    <td colspan="3" style="text-align:center;">
         <button on:click={() => selectedVehicle = "Cross"}><b>Cross</b></button>
-    </td>
-    <td style="text-align:center;">
         <button on:click={() => selectedVehicle = "Fit"}>Fit</button>
     </td>
     {:else}
-    <td style="text-align:center;">
+    <td colspan="3" style="text-align:center;">
         <button on:click={() => selectedVehicle = "Cross"}>Cross</button>
-        </td>
-    <td style="text-align:center;">
         <button on:click={() => selectedVehicle = "Fit"}><b>Fit</b></button>
-    </td>
+        </td>
     {/if}
 </tr>
 
 <tr>
     <td>Date</td>
-    <td><input type="date" bind:value={date}></td>
+    <td style="font-size:1.2em;"><input style="width:8em;" type="date" bind:value={date}></td>
     <td>{date.toLocaleString()}</td>
 </tr>
 
@@ -194,8 +181,7 @@ async function getRecords () {
 
 <tr>
     <td>Location</td>
-    <td><input style="text-align=center" type="checkbox" bind:checked={saveCoords}></td>
-    <td>{loggedCoords}</td>
+    <td><input style="margin-left:auto;margin-right:auto;" type="checkbox" bind:checked={saveCoords}>&nbsp;&nbsp;&nbsp;&nbsp;{loggedCoords}</td>
 </tr>
 
 </tbody></table>
@@ -210,7 +196,7 @@ async function getRecords () {
 
 </form>
 
-<h2>Last 30 days</h2>
+<h2><a href="{base}/drive/history">Last 30 days</a></h2>
 
 <table style="margin:0px auto;font-family:monospace;font-size:0.9rem;">
     <thead>
