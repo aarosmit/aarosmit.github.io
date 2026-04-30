@@ -1,3 +1,5 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <script>
 
 import Highcharts from 'highcharts';
@@ -141,7 +143,6 @@ async function getRecords () {
         if (records[i].vehicle === "4Runner") {
             if (records[i].cost) {
                 cumCost4Runner = cumCost4Runner + records[i].cost
-                console.log(Math.round(cumCost4Runner), records[i].cost)
                 costData4Runner.data.push({
                     x: new Date(records[i].date),
                     y: Math.round(cumCost4Runner)
@@ -158,12 +159,14 @@ async function getRecords () {
             }
         }
     }
-    console.log(costData4Runner)
     
     return records
 }
 
 $: chartOdometerOptions = {
+    chart: {
+        height: "90%"
+    },
     title: {
         text: "Odometer"
     },
@@ -188,6 +191,9 @@ $: chartOdometerOptions = {
 }
 
 $: chartCostOptions = {
+    chart: {
+        height: "65%"
+    },
     title: {
         text: "Cost"
     },
@@ -213,16 +219,21 @@ $: chartCostOptions = {
 
 </script>
 
-{#await getRecords()}
-    <p>Getting data</p>
-{:then records} 
-    <Chart 
-        options={chartOdometerOptions} 
-        highcharts={Highcharts}
-    />
-    <Chart 
-        options={chartCostOptions} 
-        highcharts={Highcharts}
-    />
+    {#await getRecords()}
+        <p>Getting data</p>
+    {:then records} 
 
-{/await}
+        <Chart
+                options={chartOdometerOptions} 
+                highcharts={Highcharts}
+        />
+        <Chart 
+            options={chartCostOptions} 
+            highcharts={Highcharts}
+        />
+
+    {/await}
+
+<style>
+
+</style>
