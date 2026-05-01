@@ -91,10 +91,7 @@ async function createRecord (record) {
     recordSubmitted = true;
 }
 
-async function auth () {
-    const authData = await pb.collection("users").authWithPassword("aaron", password);
-    console.log(authData)
-}
+
 
 async function getRecords () {
     try {

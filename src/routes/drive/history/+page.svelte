@@ -10,6 +10,12 @@ const pb = new PocketBase('https://db.aarosmit.com');
 
 let records;
 $: selectedVehicle = "Fit";
+let password;
+
+async function auth () {
+    const authData = await pb.collection("users").authWithPassword("aaron", password);
+    console.log(authData)
+}
 
 let odometerDataFit = {
     type: "line",
