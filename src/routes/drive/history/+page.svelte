@@ -192,7 +192,7 @@ $: chartOdometerOptions = {
 
 $: chartCostOptions = {
     chart: {
-        height: "65%"
+        height: "75%"
     },
     title: {
         text: "Cost"
@@ -200,7 +200,7 @@ $: chartCostOptions = {
     plotOptions: {
         series: {
             enableMouseTracking: true,
-            lineWidth: 1,
+            lineWidth: 2,
             label: {
                 enabled: false
             },

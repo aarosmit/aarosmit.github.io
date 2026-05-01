@@ -60,6 +60,8 @@ let prevCrossRecord;
 let prevFitRecord;
 let prevSelectedRecord;
 let recordSubmitted = false;
+let password;
+let error;
 
 // $: console.log(saveCoords, loggedCoords)
 
@@ -89,11 +91,22 @@ async function createRecord (record) {
     recordSubmitted = true;
 }
 
+async function auth () {
+    const authData = await pb.collection("users").authWithPassword("aaron", password);
+    console.log(authData)
+}
+
 async function getRecords () {
-    records = await pb.collection('vehicles').getFullList({
-        sort: '-date',
-        filter: `date >= "${oneMonthAgo}"`
-    });
+    try {
+        records = await pb.collection('vehicles').getFullList({
+            sort: '-date',
+            filter: `date >= "${oneMonthAgo}"`
+        })
+    } catch (err) {
+        error = err.message
+        console.log(err.message)
+    }
+    // console.log(records)
     for (let i = 0; i < records.length; i++) {
         if (records[i].vehicle === "Cross" && records[i].odometer > 0) {
             prevCrossRecord = records[i]
@@ -107,7 +120,7 @@ async function getRecords () {
         }
     }
 
-    // console.log(records)
+
     // console.log(prevCrossRecord, prevFitRecord)
     return records
 }
@@ -166,7 +179,6 @@ async function getRecords () {
 <tr>
     <td>Notes</td>
     <td><input type="text" bind:value={notes} placeholder={prevSelectedRecord.notes}></td>
-    <td>{notes}</td>
 </tr>
 
 <tr>
@@ -199,16 +211,20 @@ async function getRecords () {
     </tr></thead>
     <tbody>
     {#each records as record}
-    <tr>
-        <td style="text-align:center;">{record.vehicle}</td>
-        <td style="text-align:center;">{new Date(record.date).toLocaleDateString()}</td>
-        <td style="text-align:right;">{record.odometer.toLocaleString()}</td>
-        <td style="text-align:right;">$ {record.cost.toLocaleString()}</td>
-        <td>{record.notes}</td>
-    </tr>
+        <tr>
+            <td style="text-align:center;">{record.vehicle}</td>
+            <td style="text-align:center;">{new Date(record.date).toLocaleDateString()}</td>
+            <td style="text-align:right;">{record.odometer.toLocaleString()}</td>
+            <td style="text-align:right;">$ {record.cost.toLocaleString()}</td>
+            <td>{record.notes}</td>
+        </tr>
     {/each}
     </tbody>
 </table>
+
+{:catch}
+
+<p>{error}</p>
     
 {/await}
 
