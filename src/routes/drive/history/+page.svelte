@@ -11,10 +11,23 @@ const pb = new PocketBase('https://db.aarosmit.com');
 let records;
 $: selectedVehicle = "Fit";
 let password;
+let authData;
+let error;
 
-async function auth () {
-    const authData = await pb.collection("users").authWithPassword("aaron", password);
-    console.log(authData)
+async function login () {
+    try {
+        authData = await pb.collection("users").authWithPassword('aaron', password);
+        error = null;
+    } catch (err) {
+        error = err.message
+        console.log(err.message)
+    }
+
+    // console.log(authData)
+
+    // console.log(pb.authStore.isValid);
+    // console.log(pb.authStore.token);
+    // console.log(pb.authStore.record.id);
 }
 
 let odometerDataFit = {
@@ -225,20 +238,39 @@ $: chartCostOptions = {
 
 </script>
 
-    {#await getRecords()}
-        <p>Getting data</p>
-    {:then records} 
+{#if !authData}
+<div style="text-align:center;">
+    <input type="password" bind:value={password}>
+    <br><br>
+    <button on:click={login}>LOGIN</button>
+</div>
 
-        <Chart
-                options={chartOdometerOptions} 
-                highcharts={Highcharts}
-        />
-        <Chart 
-            options={chartCostOptions} 
-            highcharts={Highcharts}
-        />
+{:else}
 
-    {/await}
+{#await getRecords()}
+
+<p style="text-align:center;">Getting data</p>
+
+{:then records} 
+
+<Chart
+        options={chartOdometerOptions} 
+        highcharts={Highcharts}
+/>
+<Chart 
+    options={chartCostOptions} 
+    highcharts={Highcharts}
+/>
+
+{/await}
+
+{/if}
+
+{#if error}
+
+<p style="text-align:center;">{error}</p>
+
+{/if}
 
 <style>
 
