@@ -38,6 +38,11 @@ async function getDailies () {
     dailies = await pb.collection('daily').getFullList({
         sort:'-date',
     })
+
+    if (new Date(dailies[0].date).toLocaleDateString() !== new Date().toLocaleDateString()) {
+        console.log("true")
+    }
+
     console.log(dailies)
     entries = dailies[0].entries
 
