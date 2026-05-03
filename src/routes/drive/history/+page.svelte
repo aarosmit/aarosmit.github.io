@@ -13,6 +13,7 @@ $: selectedVehicle = "Fit";
 let password;
 let authData;
 let error;
+let selector = "odometer"
 
 async function login () {
     try {
@@ -36,6 +37,11 @@ let odometerDataFit = {
     name: "2008 Fit"
 };
 let costDataFit = {
+    type: "line",
+    data: [],
+    name: "2008 Fit"
+};
+let costPerMileDataFit = {
     type: "line",
     data: [],
     name: "2008 Fit"
@@ -177,6 +183,18 @@ async function getRecords () {
                 })
             }
         }
+
+        // CREATE COST PER MILE DATA
+        if (records[i].vehicle === "Fit") {
+            if (records[i].cost) {
+                cumCostFit = cumCostFit + records[i].cost
+                costDataFit.data.push({
+                    x: new Date(records[i].date),
+                    y: Math.round(cumCostFit)
+                })
+            }
+        }
+
     }
     
     return records
@@ -184,7 +202,7 @@ async function getRecords () {
 
 $: chartOdometerOptions = {
     chart: {
-        height: "90%"
+        height: "150%"
     },
     title: {
         text: "Odometer"
@@ -211,7 +229,7 @@ $: chartOdometerOptions = {
 
 $: chartCostOptions = {
     chart: {
-        height: "75%"
+        height: "150%"
     },
     title: {
         text: "Cost"
@@ -239,6 +257,7 @@ $: chartCostOptions = {
 </script>
 
 {#if !authData}
+
 <div style="text-align:center;">
     <input type="password" bind:value={password}>
     <br><br>
@@ -253,14 +272,29 @@ $: chartCostOptions = {
 
 {:then records} 
 
+{#if selector === "odometer"}
+
 <Chart
         options={chartOdometerOptions} 
         highcharts={Highcharts}
 />
+
+{:else if selector === "cost"}
+
 <Chart 
     options={chartCostOptions} 
     highcharts={Highcharts}
 />
+
+<!-- {:else if selector === "costPerMile"} -->
+
+{/if}
+
+<div style="text-align:center;">
+<button on:click={() => selector = "odometer"}>ODOMETER</button>
+<button on:click={() => selector = "cost"}>COST</button>
+<!-- <button on:click={() => selector = "costPerMile"}>COST / MILE</button> -->
+</div>
 
 {/await}
 
