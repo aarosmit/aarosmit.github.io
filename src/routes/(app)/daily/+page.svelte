@@ -20,6 +20,15 @@ $: entries = null;
 let initialEntries;
 let changes = false;
 
+let test = [{
+  note: "",
+  sub: [{
+    note: "",
+    sub: [{
+      note: "",
+    }]
+  }]
+}]
 
 // async function login () {
 //     try {
@@ -130,7 +139,15 @@ function changeDate (date) {
 <!-- {#each dailies[0].entries } -->
 
 <div style="width:100%;overflow-y:auto;margin-top:auto;">
-<!-- <div style="position:sticky;width:100%;bottom:0;left:0;overflow:auto;"> -->
+
+
+
+
+
+
+
+
+    <!-- <div style="position:sticky;width:100%;bottom:0;left:0;overflow:auto;">
 {#each entries as entry, index}
     {#if index === entries.length - 1}
         <button style="font-family:sans-serif;font-size:1.2em;" on:click={() => deleteEntry(index)}>x</button><textarea style="font-family:sans-serif;font-size:1.2em;width:90%;field-sizing:content;border-left:none;border-top:none;border-right:none;resize:none;" type="text" bind:value={entry}></textarea><br>
@@ -146,7 +163,7 @@ function changeDate (date) {
 <div style="text-align:center;">
 <br>
 <button style="font-size:1.2em;" on:click={() => addEntry()}>ADD</button>
-<button style="font-size:1.2em;" on:click={save}>SAVE</button>
+<button style="font-size:1.2em;" on:click={save}>SAVE</button> -->
 </div>
     
 <!-- {/await} -->
