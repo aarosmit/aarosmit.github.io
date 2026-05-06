@@ -5,186 +5,172 @@
 <script>
 
 import PocketBase from 'pocketbase';
-import { onMount, onDestroy } from 'svelte';
+import { onMount, onDestroy, tick } from 'svelte';
 
 const pb = new PocketBase('https://db.aarosmit.com');
 
-let dailies;
-let authData;
-let password;
-let error;
-let today = new Date().toLocaleDateString();
-let selectedDate = today;
-let selectedID;
-$: entries = null;
-let initialEntries;
-let changes = false;
+let notes = $state(null);
+let error = $state(null);
+let today = new Date().toISOString().split("T")[0]
+let selectedDate = $state(today)
 
-let test = [{
-  note: "",
-  sub: [{
-    note: "",
-    sub: [{
-      note: "",
-    }]
-  }]
-}]
+let dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
-// async function login () {
-//     try {
-//         authData = await pb.collection("users").authWithPassword('aaron', password);
-//         error = null;
-//     } catch (err) {
-//         error = err.message
-//         console.log(err.message)
-//     }
-// }
+// $inspect(notes)
 
 onMount(async () => {
-    dailies = await getDailies()
+    await getNotes()
 
     pb.collection('daily').subscribe('*', async (e) => {
-        dailies = await getDailies()
+        await getNotes()
     })
+    
 
-    if (new Date(dailies[0].date).toLocaleDateString() === today) {
-        console.log("today exists")
-    } else {
-        pb.collection('daily').create({
-            date: new Date(),
-            entries: [""]
-        })
-    }
 
-    entries = dailies[0].entries
-    selectedID = dailies[0].id
 })
 
-onDestroy(() => {
-    pb.collection('daily').unsubscribe('*');
-})
-
-function getDailies () {
+async function getNotes () {
+    // console.log(selectedDate)
     try {
-        return pb.collection('daily').getFullList({
-            sort:'-date',
+        notes = await pb.collection('notes').getFullList({
+            sort:'index',
+            filter:`date="${selectedDate}"`
         })
 
     } catch (err) {
         error = err.message
         console.log(err.message)
     }
-}
 
-async function save () {
-    let update = {
-        entries: entries
+    if (notes.length === 0) {
+        notes = [...notes, {
+            "date": selectedDate,
+            "index": 0,
+            "indent": 0,
+            "note": "",
+            "saved": "no"
+        }]
     }
-    await pb.collection('daily').update(selectedID, update)
 }
 
-function addEntry () {
-    // entries = [...entries, ""]
-    entries.push("")
-    entries = entries
-}
-
-function deleteEntry (index) {
-    entries.splice(index, 1)
-    entries = entries
-}
-
-function changeDate (date) {
-    selectedID = dailies[date].id
-    selectedDate = new Date(dailies[date].date).toLocaleDateString()
-    entries = dailies[date].entries
-}
-
-// function handleEnterKey(event) {
-//     if (event.key === 'Enter') {
-//         addEntry()
+// async function save () {
+//     let update = {
+//         note: entries
 //     }
+//     await pb.collection('notes').update(selectedID, update)
 // }
 
+async function handleKeyPress (curIndex, nextIndex, indent, id, i) {
+    if (event.key === "Enter") {
+        event.preventDefault()
+        let newIndex = 0
+        if (nextIndex) {
+            newIndex = (curIndex + nextIndex) / 2
+        } else {
+            newIndex = curIndex + 256
+        }
+        if (id) {
+            pb.collection('notes').update(id, {
+                "note": notes[i].note,
+                "indent": notes[i].indent
+            })
+            notes[i].saved = "yes"
+        } else {
+            pb.collection('notes').create({
+                "date": selectedDate,
+                "index": newIndex,
+                "indent": notes[i].indent,
+                "note": notes[i].note
+            })
+            notes[i].saved = "yes"
+        }
+        notes.splice(i + 1, 0, {
+            "date": selectedDate,
+            "index": newIndex,
+            "indent": notes[i].indent,
+            "note": "",
+            "saved": "no"
+        })
+        await tick()
+        const inputs = Array.from(document.querySelectorAll('div'));
+        const currentIndex = inputs.indexOf(document.activeElement);
+        const nextElement = inputs[currentIndex + 1];
+        if (nextElement) nextElement.focus();
 
+    }
+    if (event.key === "ArrowRight") {
+        event.preventDefault()
+        if(notes[i].indent < 10) {
+            notes[i].indent = notes[i].indent + 1
+        }
+        // console.log(indent)
+    }
+    if (event.key === "ArrowLeft") {
+        event.preventDefault()
+        if(notes[i].indent >= 1) {
+            notes[i].indent = notes[i].indent - 1
+        }
+        // console.log(indent)
+    }
+}
+
+function checkIndex (array, ind) {
+    if (ind < 0 || ind >= notes.length) {
+        return null
+    } else {
+        return notes[ind].index
+    }
+}
 
 </script>
 
+{#if notes}
 
-<!-- {#await getDailies()} -->
-
-{#if !entries}
-
-<p>Getting dailies...</p>
-
-{/if}
-
-<p>
-{#each dailies as daily, i}
-        {#if new Date(daily.date).toLocaleDateString() === selectedDate}
-            <button style="font-weight:bold;font-size:1.2em;" on:click={() => changeDate(i)}>{new Date(daily.date).toLocaleDateString()}</button>&nbsp;
-        {:else}
-            <button style="font-size:1.2em;" on:click={() => changeDate(i)}>{new Date(daily.date).toLocaleDateString()}</button>&nbsp;
-        {/if}
-
-{/each}
+<p style="text-align:right;font-weight:bold;">
+    {dayNames[new Date(selectedDate).getDay()]},
+    <input type="date" style="font-family:sans-serif;font-weight:bold;font-size:1em;" bind:value={selectedDate} onchange={() => getNotes()}>
 </p>
 
-<div style="height:75vh;display:flex;align-items:flex-end;overflow:auto;flex-direction:column-reverse;">
-<!-- <div style="height:300px;position:relative;overflow:auto;"> -->
+<form>
 
+{#each notes as note, i}
 
-<!-- {:then dailies}  -->
+{#if note.saved === "no"}
 
-<!-- {#each dailies[0].entries } -->
-
-<div style="width:100%;overflow-y:auto;margin-top:auto;">
-
-
-
-
-
-
-
-
-    <!-- <div style="position:sticky;width:100%;bottom:0;left:0;overflow:auto;">
-{#each entries as entry, index}
-    {#if index === entries.length - 1}
-        <button style="font-family:sans-serif;font-size:1.2em;" on:click={() => deleteEntry(index)}>x</button><textarea style="font-family:sans-serif;font-size:1.2em;width:90%;field-sizing:content;border-left:none;border-top:none;border-right:none;resize:none;" type="text" bind:value={entry}></textarea><br>
-    {:else}
-        <button style="font-family:sans-serif;font-size:1.2em;" on:click={() => deleteEntry(index)}>x</button><textarea style="font-family:sans-serif;font-size:1.2em;width:90%;field-sizing:content;border-left:none;border-top:none;border-right:none;resize:none;" type="text" bind:value={entry}></textarea><br>
-    {/if}
-
-{/each}
+<div contenteditable 
+    style="width:{97 - note.indent * 5}%;min-height:1.5em;display:flex;align-items:flex-end;border-top:none;border-left:none;border-right:none;border-bottom:1px solid #C0C0C0;overflow-wrap:break-word;margin-left:{note.indent * 5}%;background:#FFFDD0;padding-left:0.25em;padding-right:0.25em;"
+    role="textbox"
+    onkeydown={() => handleKeyPress(note.index, checkIndex(notes, i + 1), note.indent, note.id, i)}
+    bind:textContent={note.note}
+    >
 </div>
 
+{:else}
+
+<div contenteditable 
+    style="width:{97 - note.indent * 5}%;min-height:1.5em;display:flex;align-items:flex-end;border-top:none;border-left:none;border-right:none;border-bottom:1px solid #C0C0C0;overflow-wrap:break-word;margin-left:{note.indent * 5}%;padding-left:0.25em;padding-right:0.25em;"
+    role="textbox"
+    onkeydown={() => handleKeyPress(note.index, checkIndex(notes, i + 1), note.indent, note.id, i)}
+    bind:textContent={note.note}
+    >
 </div>
-
-<div style="text-align:center;">
-<br>
-<button style="font-size:1.2em;" on:click={() => addEntry()}>ADD</button>
-<button style="font-size:1.2em;" on:click={save}>SAVE</button> -->
-</div>
-    
-<!-- {/await} -->
-
-<!-- {#if !authData}
-
-<div style="text-align: center;">
-    <input type="password" bind:value={password}>
-    <button on:click={login}>LOGIN</button>
-</div>
-
-{/if} -->
-
-{#if authData}
-
-<p>Testing!</p>
 
 {/if}
 
-{#if error}
+{/each}
+
+</form>
+
+{:else}
+
+{#if !error}
+
+<p>Getting notes...</p>
+
+{:else}
 
 <p>{error}</p>
+
+{/if}
 
 {/if}
