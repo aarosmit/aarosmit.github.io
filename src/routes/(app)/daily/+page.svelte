@@ -74,6 +74,13 @@ async function handleKeyPress (curIndex, nextIndex, indent, id, i) {
         } else {
             newIndex = curIndex + 256
         }
+        notes.splice(i + 1, 0, {
+            "date": selectedDate,
+            "index": newIndex,
+            "indent": notes[i].indent,
+            "note": "",
+            "saved": "no"
+        })
         if (id) {
             pb.collection('notes').update(id, {
                 "note": notes[i].note,
@@ -89,17 +96,10 @@ async function handleKeyPress (curIndex, nextIndex, indent, id, i) {
             })
             notes[i].saved = "yes"
         }
-        notes.splice(i + 1, 0, {
-            "date": selectedDate,
-            "index": newIndex,
-            "indent": notes[i].indent,
-            "note": "",
-            "saved": "no"
-        })
+        let divs = Array.from(document.querySelectorAll('div'));
+        let currentIndex = divs.indexOf(document.activeElement);
         await tick()
-        const inputs = Array.from(document.querySelectorAll('div'));
-        const currentIndex = inputs.indexOf(document.activeElement);
-        const nextElement = inputs[currentIndex + 1];
+        let nextElement = divs[currentIndex + 1];
         if (nextElement) nextElement.focus();
 
     }
@@ -116,6 +116,18 @@ async function handleKeyPress (curIndex, nextIndex, indent, id, i) {
             notes[i].indent = notes[i].indent - 1
         }
         // console.log(indent)
+    }
+    if (event.key === "Backspace" && notes[i].note === "") {
+        let divs = Array.from(document.querySelectorAll('div'));
+        let currentIndex = divs.indexOf(document.activeElement);
+        notes.splice(i, 1)
+        notes = notes
+        if (id) {
+            pb.collection('notes').delete(id)
+        }
+        await tick()
+        let prevElement = divs[currentIndex - 1];
+        if (prevElement) prevElement.focus();
     }
 }
 
