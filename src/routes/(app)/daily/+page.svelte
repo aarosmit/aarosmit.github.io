@@ -11,8 +11,13 @@ const pb = new PocketBase('https://db.aarosmit.com');
 
 let notes = $state(null);
 let error = $state(null);
-let today = new Date().toISOString().split("T")[0]
-let selectedDate = $state(today)
+let tzOffset = new Date().getTimezoneOffset() * 60 * 1000;
+let today = new Date()
+let todayString = new Date((today * 1 - tzOffset)).toISOString().split("T")[0]
+let selectedDateArray = $state(today.toString().split(' '))
+let selectedDate = $state(todayString)
+
+console.log(selectedDateArray)
 
 let dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
@@ -122,14 +127,30 @@ function checkIndex (array, ind) {
     }
 }
 
+function nextDay () {
+    let nextDay = new Date(new Date(selectedDate) * 1 + tzOffset + 24 * 60 * 60 * 1000)
+    selectedDate = nextDay.toISOString().split("T")[0]
+    getNotes()
+}
+
+function prevDay () {
+    let prevDay = new Date(new Date(selectedDate) * 1 + tzOffset - 24 * 60 * 60 * 1000)
+    selectedDate = prevDay.toISOString().split("T")[0]
+    getNotes()
+}
+
 </script>
 
 {#if notes}
 
-<p style="text-align:right;font-weight:bold;">
-    {dayNames[new Date(selectedDate).getDay()]},
+<div style="text-align:center;font-weight:bold;">
+    <p>
+        <button onclick={() => prevDay()}>PREV</button>
+        {selectedDateArray[0]}, {selectedDateArray[1]} {selectedDateArray[2]} {selectedDateArray[3]}
+        <button onclick={() => nextDay()}>NEXT</button>
+    </p>
     <input type="date" style="font-family:sans-serif;font-weight:bold;font-size:1em;" bind:value={selectedDate} onchange={() => getNotes()}>
-</p>
+</div>
 
 <form>
 
