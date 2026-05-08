@@ -18,6 +18,25 @@ let selectedDateArray = $state(today.toString().split(' '))
 let selectedDate = $state(todayString)
 let prevIndex = 1;
 
+let password = $state(null);
+let authData = $state(null);
+
+async function login () {
+    try {
+        authData = await pb.collection("users").authWithPassword('aaron', password);
+        error = null;
+    } catch (err) {
+        error = err.message
+        console.log(err.message)
+    }
+
+    console.log(authData)
+
+    // console.log(pb.authStore.isValid);
+    // console.log(pb.authStore.token);
+    // console.log(pb.authStore.record.id);
+}
+
 // console.log(selectedDateArray)
 
 let dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
@@ -206,6 +225,16 @@ function checkDone (done) {
 
 </script>
 
+{#if !authData}
+
+<div style="text-align:center;padding-top:2em;">
+    <input type="password" bind:value={password}>
+    <br><br>
+    <button onclick={() => login()}>LOGIN</button>
+</div>
+
+{:else}
+
 {#if notes}
 
 <div style="text-align:center;font-weight:bold;font-family:'Google Sans';">
@@ -262,6 +291,8 @@ function checkDone (done) {
 {:else}
 
 <p>{error}</p>
+
+{/if}
 
 {/if}
 
