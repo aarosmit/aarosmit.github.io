@@ -16,8 +16,9 @@ let today = new Date()
 let todayString = new Date((today * 1 - tzOffset)).toISOString().split("T")[0]
 let selectedDateArray = $state(today.toString().split(' '))
 let selectedDate = $state(todayString)
+let prevIndex = 1;
 
-console.log(selectedDateArray)
+// console.log(selectedDateArray)
 
 let dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
@@ -72,15 +73,8 @@ async function handleKeyPress (curIndex, nextIndex, indent, id, i) {
         if (nextIndex) {
             newIndex = (curIndex + nextIndex) / 2
         } else {
-            newIndex = curIndex + 256
+            newIndex = curIndex + 100
         }
-        notes.splice(i + 1, 0, {
-            "date": selectedDate,
-            "index": newIndex,
-            "indent": notes[i].indent,
-            "note": "",
-            "saved": "no"
-        })
         if (id) {
             pb.collection('notes').update(id, {
                 "note": notes[i].note,
@@ -90,27 +84,50 @@ async function handleKeyPress (curIndex, nextIndex, indent, id, i) {
         } else {
             pb.collection('notes').create({
                 "date": selectedDate,
-                "index": newIndex,
+                "index": curIndex,
                 "indent": notes[i].indent,
                 "note": notes[i].note
             })
             notes[i].saved = "yes"
         }
+        notes.splice(i + 1, 0, {
+            "date": selectedDate,
+            "index": newIndex,
+            "indent": notes[i].indent,
+            "note": "",
+            "saved": "no"
+        })
+        await tick()
         let divs = Array.from(document.querySelectorAll('div'));
         let currentIndex = divs.indexOf(document.activeElement);
-        await tick()
-        let nextElement = divs[currentIndex + 1];
-        if (nextElement) nextElement.focus();
+        if (currentIndex !== -1) {
+            prevIndex = currentIndex
+        }
+        // await tick()
+        console.log(divs)
+        // await tick()
+        // console.log(divs)
+        let nextElement;
+        if (currentIndex  === -1) {
+            nextElement = divs[prevIndex + 2];
+            prevIndex = prevIndex + 1
+        } else if (currentIndex < divs.length) {
+            nextElement = divs[currentIndex + 1];
+        } else if (currentIndex === divs.length) {
+            nextElement = divs[divs.length - 2];
+        }
+        console.log(currentIndex, prevIndex, divs, nextElement)
+        nextElement.focus();
 
     }
-    if (event.key === "ArrowRight") {
+    if (event.key === "ArrowRight" || event.key === ">") {
         event.preventDefault()
         if(notes[i].indent < 10) {
             notes[i].indent = notes[i].indent + 1
         }
         // console.log(indent)
     }
-    if (event.key === "ArrowLeft") {
+    if (event.key === "ArrowLeft" || event.key === "<") {
         event.preventDefault()
         if(notes[i].indent >= 1) {
             notes[i].indent = notes[i].indent - 1
@@ -118,16 +135,43 @@ async function handleKeyPress (curIndex, nextIndex, indent, id, i) {
         // console.log(indent)
     }
     if (event.key === "Backspace" && notes[i].note === "") {
+        event.preventDefault()
         let divs = Array.from(document.querySelectorAll('div'));
         let currentIndex = divs.indexOf(document.activeElement);
+        await getNotes()
         notes.splice(i, 1)
-        notes = notes
         if (id) {
             pb.collection('notes').delete(id)
         }
         await tick()
         let prevElement = divs[currentIndex - 1];
         if (prevElement) prevElement.focus();
+        let range = document.createRange()
+        range.selectNodeContents(prevElement)
+        range.collapse(false)
+        let selection = window.getSelection();
+        selection.removeAllRanges()
+        selection.addRange(range);
+    }
+    if (event.key === "~") {
+        event.preventDefault();
+        if (notes[i].done === false) {
+            notes[i].done = true
+            if (id) {
+                pb.collection('notes').update(id, {
+                    "done": true,
+                })
+                notes[i].saved = "yes"
+            }
+        } else {
+            notes[i].done = false
+            if (id) {
+                pb.collection('notes').update(id, {
+                    "done": false,
+                })
+                notes[i].saved = "yes"
+            }
+        }
     }
 }
 
@@ -139,39 +183,61 @@ function checkIndex (array, ind) {
     }
 }
 
-function nextDay () {
+async function nextDay () {
     let nextDay = new Date(new Date(selectedDate) * 1 + tzOffset + 24 * 60 * 60 * 1000)
+    console.log(nextDay)
     selectedDate = nextDay.toISOString().split("T")[0]
-    getNotes()
+    selectedDateArray = nextDay.toString().split(' ')
+    await getNotes()
 }
 
-function prevDay () {
+async function prevDay () {
     let prevDay = new Date(new Date(selectedDate) * 1 + tzOffset - 24 * 60 * 60 * 1000)
+    console.log(prevDay)
     selectedDate = prevDay.toISOString().split("T")[0]
-    getNotes()
+    selectedDateArray = prevDay.toString().split(' ')
+    await getNotes()
+}
+
+function checkIndent (indent) {
+    if (indent === 0) {
+        return "bold"
+    }
+}
+
+function checkDone (done) {
+    if (done) {
+        return "gray"
+    }
 }
 
 </script>
 
 {#if notes}
 
-<div style="text-align:center;font-weight:bold;">
+<div style="text-align:center;font-weight:bold;font-family:'Google Sans';">
     <p>
-        <button onclick={() => prevDay()}>PREV</button>
-        {selectedDateArray[0]}, {selectedDateArray[1]} {selectedDateArray[2]} {selectedDateArray[3]}
-        <button onclick={() => nextDay()}>NEXT</button>
+        <button style="padding-left:1em;padding-right:1em;font-size:1.2em;border:none;border-radius:10px;background-color:#ec8c93;" onclick={() => prevDay()}>◄</button>
+        &nbsp;{selectedDateArray[0]}, {selectedDateArray[1]} {selectedDateArray[2]} {selectedDateArray[3]}&nbsp;
+        <button style="padding-left:1em;padding-right:1em;font-size:1.2em;border:none;border-radius:10px;background-color:#b5d5a3;" onclick={() => nextDay()}>►</button>
     </p>
-    <input type="date" style="font-family:sans-serif;font-weight:bold;font-size:1em;" bind:value={selectedDate} onchange={() => getNotes()}>
+    <!-- <input type="date" style="font-family:sans-serif;font-weight:bold;font-size:1em;" bind:value={selectedDate} onchange={() => getNotes()}> -->
 </div>
 
 <form>
+
+<!-- <div
+    style="text-align:right;width:{97}%;min-height:1.5em;align-items:flex-end;border-top:none;border-left:none;border-right:none;border-bottom:1px solid #C0C0C0;overflow-wrap:break-word;margin-left:0%;padding-left:0.25em;padding-right:0.25em;font-weight:bold;font-family:'Google Sans'"
+    >
+    {selectedDateArray[0]}, {selectedDateArray[1]} {selectedDateArray[2]} {selectedDateArray[3]}
+</div> -->
 
 {#each notes as note, i}
 
 {#if note.saved === "no"}
 
 <div contenteditable 
-    style="width:{97 - note.indent * 5}%;min-height:1.5em;display:flex;align-items:flex-end;border-top:none;border-left:none;border-right:none;border-bottom:1px solid #C0C0C0;overflow-wrap:break-word;margin-left:{note.indent * 5}%;background:#FFFDD0;padding-left:0.25em;padding-right:0.25em;"
+    style="width:{97 - note.indent * 5}%;min-height:1.6em;display:flex;align-items:flex-end;border-top:none;border-left:none;border-right:none;border-bottom:1px solid #C0C0C0;overflow-wrap:break-word;margin-left:{note.indent * 5}%;background:#FFFDD0;padding-left:0.25em;padding-right:0.25em;font-weight:{checkIndent(note.indent)};color:{checkDone(note.done)};font-family:'Google Sans'"
     role="textbox"
     onkeydown={() => handleKeyPress(note.index, checkIndex(notes, i + 1), note.indent, note.id, i)}
     bind:textContent={note.note}
@@ -181,7 +247,7 @@ function prevDay () {
 {:else}
 
 <div contenteditable 
-    style="width:{97 - note.indent * 5}%;min-height:1.5em;display:flex;align-items:flex-end;border-top:none;border-left:none;border-right:none;border-bottom:1px solid #C0C0C0;overflow-wrap:break-word;margin-left:{note.indent * 5}%;padding-left:0.25em;padding-right:0.25em;"
+    style="width:{97 - note.indent * 5}%;min-height:1.5em;display:flex;align-items:flex-end;border-top:none;border-left:none;border-right:none;border-bottom:1px solid #C0C0C0;overflow-wrap:break-word;margin-left:{note.indent * 5}%;padding-left:0.25em;padding-right:0.25em;background-color:rgba(0,0,0,{note.indent * 0.02});font-weight:{checkIndent(note.indent)};color:{checkDone(note.done)};font-family:'Google Sans'"
     role="textbox"
     onkeydown={() => handleKeyPress(note.index, checkIndex(notes, i + 1), note.indent, note.id, i)}
     bind:textContent={note.note}
@@ -198,7 +264,7 @@ function prevDay () {
 
 {#if !error}
 
-<p>Getting notes...</p>
+<p style="text-align:center;font-weight:bold;font-family:'Google Sans';">Getting notes...</p>
 
 {:else}
 

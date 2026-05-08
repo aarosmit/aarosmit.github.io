@@ -27,6 +27,7 @@
 		"layerchart": "^1.0.13",
 		"luxon": "^3.7.2",
 		"pocketbase": "^0.26.8",
+		"svelte-gestures": "^5.2.2",
 		"tz-lookup": "^6.1.25"
 	}
 }
