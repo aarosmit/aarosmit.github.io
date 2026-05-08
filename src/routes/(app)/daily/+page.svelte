@@ -97,25 +97,18 @@ async function handleKeyPress (curIndex, nextIndex, indent, id, i) {
             "note": "",
             "saved": "no"
         })
-        await tick()
+        // await tick()
         let divs = Array.from(document.querySelectorAll('div'));
         let currentIndex = divs.indexOf(document.activeElement);
-        if (currentIndex !== -1) {
-            prevIndex = currentIndex
-        }
-        // await tick()
+        console.log(divs)
+        await tick()
+        divs = Array.from(document.querySelectorAll('div'))
         console.log(divs)
         // await tick()
         // console.log(divs)
         let nextElement;
-        if (currentIndex  === -1) {
-            nextElement = divs[prevIndex + 2];
-            prevIndex = prevIndex + 1
-        } else if (currentIndex < divs.length) {
-            nextElement = divs[currentIndex + 1];
-        } else if (currentIndex === divs.length) {
-            nextElement = divs[divs.length - 2];
-        }
+        prevIndex = prevIndex + 1
+        nextElement = divs[currentIndex + 1];
         console.log(currentIndex, prevIndex, divs, nextElement)
         nextElement.focus();
 
