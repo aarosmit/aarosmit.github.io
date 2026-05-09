@@ -233,14 +233,22 @@ function toggleSearch () {
     }
 }
 
+async function changeDateToToday () {
+    selectedDate = todayString
+    let newDay = new Date(new Date(selectedDate) * 1 + tzOffset)
+    selectedDateArray = newDay.toString().split(' ')
+    console.log(selectedDate, selectedDateArray)
+    await getNotes()
+}
+
 </script>
 
 {#if !authData}
 
-<div style="text-align:center;padding-top:2em;">
-    <input type="password" bind:value={password}>
+<div style="text-align:center;position:absolute;bottom:5%;width:100%;">
+    <input style="background-color:#e9e9ed;border:none;font-size:1em;border:none;border-radius:5px;" type="password" bind:value={password}>
     <br><br>
-    <button onclick={() => login()}>LOGIN</button>
+    <button style="padding:0.5em;padding-left:1em;padding-right:1em;font-size:1.2em;border:none;border-radius:5px;" onclick={() => login()}>LOGIN</button>
 </div>
 
 {:else}
@@ -253,10 +261,22 @@ function toggleSearch () {
         &nbsp;{selectedDateArray[0]}, {selectedDateArray[1]} {selectedDateArray[2]} {selectedDateArray[3]}&nbsp;
         <button style="padding-left:1em;padding-right:1em;font-size:1.2em;border:none;border-radius:10px;" onclick={() => nextDay()}>►</button>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <button style="padding-left:1em;padding-right:1em;border:none;border-radius:10px;" onclick={() => toggleSearch()}>SEARCH</button>
+
     </p>
     <!-- <input type="date" style="font-family:sans-serif;font-weight:bold;font-size:1em;" bind:value={selectedDate} onchange={() => getNotes()}> -->
 </div>
+
+{#if selectedDate === todayString}
+<button style="font-size:1em;padding:0.5em;padding-left:1em;padding-right:1em;position:fixed;bottom:10%;right:10%;background-color:#b5d5a3;" onclick={() => changeDateToToday()}>TODAY</button>
+{:else}
+<button style="font-size:1em;padding:0.5em;padding-left:1em;padding-right:1em;position:fixed;bottom:10%;right:10%;" onclick={() => changeDateToToday()}>TODAY</button>
+{/if}
+
+{#if search}
+<button style="font-size:1em;padding:0.5em;padding-left:1em;padding-right:1em;position:fixed;bottom:5%;right:10%;background-color:#b5d5a3;" onclick={() => toggleSearch()}>SEARCH</button>
+{:else}
+<button style="font-size:1em;padding:0.5em;padding-left:1em;padding-right:1em;position:fixed;bottom:5%;right:10%;" onclick={() => toggleSearch()}>SEARCH</button>
+{/if}
 
 <form>
 
@@ -316,3 +336,29 @@ function toggleSearch () {
 
 {/if}
 
+<style>
+
+div {
+    font-family:'Google Sans';
+}
+
+button {
+    font-family:'Google Sans';
+    border:none;
+    border-radius:5px;
+    font-weight:bold;
+}
+
+button:hover {
+    background-color: #b5d5a3;
+}
+
+input {
+    background-color:#e9e9ed;
+    border:none;
+    font-size:1em;
+    border:none;
+    border-radius:5px;
+}
+
+</style>
