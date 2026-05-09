@@ -6,6 +6,7 @@
 
 import PocketBase from 'pocketbase';
 import { onMount, onDestroy, tick } from 'svelte';
+import DailySearch from '$lib/components/dailySearch.svelte';
 
 const pb = new PocketBase('https://db.aarosmit.com');
 
@@ -92,7 +93,7 @@ async function handleKeyPress (curIndex, nextIndex, indent, id, i) {
         if (nextIndex) {
             newIndex = (curIndex + nextIndex) / 2
         } else {
-            newIndex = curIndex + 100
+            newIndex = curIndex + 1000
         }
         if (id) {
             pb.collection('notes').update(id, {
@@ -296,4 +297,7 @@ function checkDone (done) {
 
 {/if}
 
+<DailySearch bind:selectedDate={selectedDate} bind:selectedDateArray={selectedDateArray} tzOffset={tzOffset} getNotes={getNotes} />
+
 {/if}
+
