@@ -21,7 +21,7 @@ let prevIndex = 1;
 let search = $state(false)
 
 let password = $state(null);
-let authData = $state(1);
+let authData = $state(null);
 
 async function login () {
     try {
