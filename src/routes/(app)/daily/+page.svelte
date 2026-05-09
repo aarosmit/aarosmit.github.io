@@ -18,6 +18,7 @@ let todayString = new Date((today * 1 - tzOffset)).toISOString().split("T")[0]
 let selectedDateArray = $state(today.toString().split(' '))
 let selectedDate = $state(todayString)
 let prevIndex = 1;
+let search = $state(false)
 
 let password = $state(null);
 let authData = $state(null);
@@ -224,6 +225,14 @@ function checkDone (done) {
     }
 }
 
+function toggleSearch () {
+    if (search) {
+        search = false
+    } else {
+        search = true
+    }
+}
+
 </script>
 
 {#if !authData}
@@ -240,9 +249,11 @@ function checkDone (done) {
 
 <div style="text-align:center;font-weight:bold;font-family:'Google Sans';">
     <p>
-        <button style="padding-left:1em;padding-right:1em;font-size:1.2em;border:none;border-radius:10px;background-color:#ec8c93;" onclick={() => prevDay()}>◄</button>
+        <button style="padding-left:1em;padding-right:1em;font-size:1.2em;border:none;border-radius:10px;" onclick={() => prevDay()}>◄</button>
         &nbsp;{selectedDateArray[0]}, {selectedDateArray[1]} {selectedDateArray[2]} {selectedDateArray[3]}&nbsp;
-        <button style="padding-left:1em;padding-right:1em;font-size:1.2em;border:none;border-radius:10px;background-color:#b5d5a3;" onclick={() => nextDay()}>►</button>
+        <button style="padding-left:1em;padding-right:1em;font-size:1.2em;border:none;border-radius:10px;" onclick={() => nextDay()}>►</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button style="padding-left:1em;padding-right:1em;border:none;border-radius:10px;" onclick={() => toggleSearch()}>SEARCH</button>
     </p>
     <!-- <input type="date" style="font-family:sans-serif;font-weight:bold;font-size:1em;" bind:value={selectedDate} onchange={() => getNotes()}> -->
 </div>
@@ -297,7 +308,11 @@ function checkDone (done) {
 
 {/if}
 
+{#if search}
+
 <DailySearch bind:selectedDate={selectedDate} bind:selectedDateArray={selectedDateArray} tzOffset={tzOffset} getNotes={getNotes} />
+
+{/if}
 
 {/if}
 

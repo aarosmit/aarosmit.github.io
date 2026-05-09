@@ -12,6 +12,7 @@ async function searchFor () {
     let records = await pb.collection('notes').getFullList({
         sort: '-created',
     });
+    results = []
     for (let i = 0; i < records.length; i++) {
         if (records[i].note.toLowerCase().includes(searchTerm)) {
             console.log(records[i].date, records[i].note)
@@ -40,7 +41,8 @@ async function changeDate (date) {
 <div>
 <form>
     <input type="text" bind:value={searchTerm}>
-    <button type="submit" onclick={() => searchFor()}>SEARCH</button>
+    <br><br>
+    <button style="border:none;font-size:1em;border-radius:5px;" type="submit" onclick={() => searchFor()}>SEARCH</button>
 </form>
 </div>
 
@@ -52,7 +54,7 @@ async function changeDate (date) {
 <tbody>
     {#each results as result}
     <tr>
-        <td><button onclick={() => changeDate(result.date)}>{result.date}</button></td>
+        <td><button style="border:none;font-size:1em;" onclick={() => changeDate(result.date)}>{result.date}</button></td>
         <td>{result.note}</td>
     </tr>
     {/each}
@@ -61,3 +63,13 @@ async function changeDate (date) {
 </table>
 
 </div>
+
+<style>
+
+button {
+    border:none;
+    font-size:1em;
+    border-radius:5px;
+}
+
+</style>
