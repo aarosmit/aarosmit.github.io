@@ -74,6 +74,10 @@ button {
     font-family:'Google Sans';
 }
 
+button:hover {
+    background-color:#7189ea80;
+}
+
 input {
     background-color:#e9e9ed;
     border:none;
