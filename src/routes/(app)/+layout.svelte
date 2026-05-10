@@ -14,13 +14,13 @@
 <style>
 
 :global(body) {
-	overflow:hidden; 
+	/* overflow:hidden;  */
 	/* background-color: #1d3040;
 	color: white; */
 }
 
 :global(body.darkmode) {
-	overflow:hidden; 
+	/* overflow:hidden;  */
 	background-color: #1d3040;
 }
 

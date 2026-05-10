@@ -21,7 +21,7 @@ let prevIndex = 1;
 let search = $state(false)
 
 let password = $state(null);
-let authData = $state(1);
+let authData = $state(null);
 
 async function login () {
     try {
@@ -140,14 +140,14 @@ async function handleKeyPress (curIndex, nextIndex, indent, id, i) {
         nextElement.focus();
 
     }
-    if (event.key === "ArrowRight" || event.key === ">") {
+    if (event.key === ">") {
         event.preventDefault()
         if(notes[i].indent < 10) {
             notes[i].indent = notes[i].indent + 1
         }
         // console.log(indent)
     }
-    if (event.key === "ArrowLeft" || event.key === "<") {
+    if (event.key === "<") {
         event.preventDefault()
         if(notes[i].indent >= 1) {
             notes[i].indent = notes[i].indent - 1
@@ -251,7 +251,7 @@ async function changeDateToToday () {
 
 {#if !authData}
 
-<div style="text-align:center;position:absolute;bottom:5%;width:100%;">
+<div style="text-align:center;position:absolute;bottom:10%;width:100%;">
     <input style="background-color:#e9e9ed;border:none;font-size:1em;border:none;border-radius:5px;" type="password" bind:value={password}>
     <br><br>
     <button style="padding:0.5em;padding-left:1em;padding-right:1em;font-size:1.2em;border:none;border-radius:5px;" onclick={() => login()}>LOGIN</button>
@@ -306,13 +306,17 @@ async function changeDateToToday () {
 
 {:else}
 
+<!-- <div style="width:2%;min-height:1.5em;display:flex;align-items:flex-start;"></div> -->
+
 <div contenteditable 
-    style="width:{97 - note.indent * 5}%;min-height:1.5em;display:flex;align-items:flex-end;border-top:none;border-left:none;border-right:none;border-bottom:1px solid #C0C0C0;overflow-wrap:break-word;margin-left:{note.indent * 5}%;padding-left:0.25em;padding-right:0.25em;background-color:rgba(0,0,0,{note.indent * 0.02});font-weight:{checkIndent(note.indent)};color:{checkDone(note.done)};font-family:'Google Sans'"
+    style="width:{97 - note.indent * 5}%;min-height:1.5em;display:flex;align-items:flex-end;border-top:none;border-left:1px solid #C0C0C0;border-right:none;border-bottom:1px solid #C0C0C0;overflow-wrap:break-word;margin-left:{note.indent * 5}%;padding-left:0.25em;padding-right:0.25em;padding-top:0.25em;background-color:rgba(0,0,0,{note.indent * 0.02});font-weight:{checkIndent(note.indent)};color:{checkDone(note.done)};font-family:'Google Sans'"
     role="textbox"
     onkeydown={() => handleKeyPress(note.index, checkIndex(notes, i + 1), note.indent, note.id, i)}
     bind:textContent={note.note}
     >
 </div>
+
+
 
 {/if}
 
@@ -341,6 +345,8 @@ async function changeDateToToday () {
 {/if}
 
 {/if}
+
+<br><br><br><br><br><br><br><br>
 
 <style>
 
