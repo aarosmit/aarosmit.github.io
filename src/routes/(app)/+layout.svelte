@@ -13,8 +13,15 @@
 
 <style>
 
-body {
+:global(body) {
 	overflow:hidden; 
+	/* background-color: #1d3040;
+	color: white; */
+}
+
+:global(body.darkmode) {
+	overflow:hidden; 
+	background-color: #1d3040;
 }
 
 a {

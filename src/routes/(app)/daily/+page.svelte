@@ -21,7 +21,7 @@ let prevIndex = 1;
 let search = $state(false)
 
 let password = $state(null);
-let authData = $state(null);
+let authData = $state(1);
 
 async function login () {
     try {
@@ -92,15 +92,15 @@ async function handleKeyPress (curIndex, nextIndex, indent, id, i) {
         event.preventDefault()
         let newIndex = 0
         if (nextIndex) {
-            if (nextIndex - curIndex > 100) {
-                newIndex = curIndex + 100
-            } else if (nextIndex - curIndex > 10) {
-                newIndex = curIndex + 10
+            if (nextIndex - curIndex > 64) {
+                newIndex = curIndex + 64
+            } else if (nextIndex - curIndex > 8) {
+                newIndex = curIndex + 8
             } else {
                 newIndex = (curIndex + nextIndex) / 2
             }
         } else {
-            newIndex = curIndex + 1000
+            newIndex = curIndex + 512
         }
         if (id) {
             pb.collection('notes').update(id, {
@@ -275,13 +275,13 @@ async function changeDateToToday () {
 {#if selectedDate === todayString}
 <button style="font-size:1em;padding:0.5em;padding-left:1em;padding-right:1em;position:fixed;bottom:10%;right:10%;background-color:#84b76680;" onclick={() => changeDateToToday()}>TODAY</button>
 {:else}
-<button style="font-size:1em;padding:0.5em;padding-left:1em;padding-right:1em;position:fixed;bottom:10%;right:10%;background-color:##e9e9ed80;" onclick={() => changeDateToToday()}>TODAY</button>
+<button style="font-size:1em;padding:0.5em;padding-left:1em;padding-right:1em;position:fixed;bottom:10%;right:10%;background-color:#e9e9ed80;" onclick={() => changeDateToToday()}>TODAY</button>
 {/if}
 
 {#if search}
 <button style="font-size:1em;padding:0.5em;padding-left:1em;padding-right:1em;position:fixed;bottom:5%;right:10%;background-color:#84b76680;" onclick={() => toggleSearch()}>SEARCH</button>
 {:else}
-<button style="font-size:1em;padding:0.5em;padding-left:1em;padding-right:1em;position:fixed;bottom:5%;right:10%;background-color:##e9e9ed80;" onclick={() => toggleSearch()}>SEARCH</button>
+<button style="font-size:1em;padding:0.5em;padding-left:1em;padding-right:1em;position:fixed;bottom:5%;right:10%;background-color:#e9e9ed80;" onclick={() => toggleSearch()}>SEARCH</button>
 {/if}
 
 <form>
