@@ -92,7 +92,13 @@ async function handleKeyPress (curIndex, nextIndex, indent, id, i) {
         event.preventDefault()
         let newIndex = 0
         if (nextIndex) {
-            newIndex = (curIndex + nextIndex) / 2
+            if (nextIndex - curIndex > 100) {
+                newIndex = curIndex + 100
+            } else if (nextIndex - curIndex > 10) {
+                newIndex = curIndex + 10
+            } else {
+                newIndex = (curIndex + nextIndex) / 2
+            }
         } else {
             newIndex = curIndex + 1000
         }
