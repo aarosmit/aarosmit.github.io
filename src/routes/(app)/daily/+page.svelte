@@ -267,13 +267,13 @@ async function changeDateToToday () {
 </div>
 
 {#if selectedDate === todayString}
-<button style="font-size:1em;padding:0.5em;padding-left:1em;padding-right:1em;position:fixed;bottom:10%;right:10%;background-color:#7189ea80;" onclick={() => changeDateToToday()}>TODAY</button>
+<button style="font-size:1em;padding:0.5em;padding-left:1em;padding-right:1em;position:fixed;bottom:10%;right:10%;background-color:#84b76680;" onclick={() => changeDateToToday()}>TODAY</button>
 {:else}
 <button style="font-size:1em;padding:0.5em;padding-left:1em;padding-right:1em;position:fixed;bottom:10%;right:10%;background-color:##e9e9ed80;" onclick={() => changeDateToToday()}>TODAY</button>
 {/if}
 
 {#if search}
-<button style="font-size:1em;padding:0.5em;padding-left:1em;padding-right:1em;position:fixed;bottom:5%;right:10%;background-color:#7189ea80;" onclick={() => toggleSearch()}>SEARCH</button>
+<button style="font-size:1em;padding:0.5em;padding-left:1em;padding-right:1em;position:fixed;bottom:5%;right:10%;background-color:#84b76680;" onclick={() => toggleSearch()}>SEARCH</button>
 {:else}
 <button style="font-size:1em;padding:0.5em;padding-left:1em;padding-right:1em;position:fixed;bottom:5%;right:10%;background-color:##e9e9ed80;" onclick={() => toggleSearch()}>SEARCH</button>
 {/if}
@@ -350,7 +350,7 @@ button {
 }
 
 button:hover {
-    background-color: #7189ea80;
+    background-color: #84b76680;
 }
 
 input {

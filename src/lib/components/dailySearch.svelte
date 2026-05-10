@@ -75,7 +75,7 @@ button {
 }
 
 button:hover {
-    background-color:#7189ea80;
+    background-color:#84b76680;
 }
 
 input {
