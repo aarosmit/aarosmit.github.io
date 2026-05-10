@@ -6,7 +6,7 @@
 
 import PocketBase from 'pocketbase';
 import { onMount, onDestroy, tick } from 'svelte';
-import { fly } from 'svelte/transition';
+import { useSwipe } from 'svelte-gestures';
 
 import DailySearch from '$lib/components/dailySearch.svelte';
 
@@ -249,6 +249,26 @@ async function changeDateToToday () {
     await getNotes()
 }
 
+function swipeHandler () {
+    if (notes[i].done === false) {
+        notes[i].done = true
+        if (id) {
+            pb.collection('notes').update(id, {
+                "done": true,
+            })
+            notes[i].saved = "yes"
+        }
+    } else {
+        notes[i].done = false
+        if (id) {
+            pb.collection('notes').update(id, {
+                "done": false,
+            })
+            notes[i].saved = "yes"
+        }
+    }
+}
+
 </script>
 
 {#if !authData}
@@ -303,6 +323,7 @@ async function changeDateToToday () {
     role="textbox"
     onkeydown={() => handleKeyPress(note.index, checkIndex(notes, i + 1), note.indent, note.id, i)}
     bind:textContent={note.note}
+    {...useSwipe(swipeHandler, () => ({timeframe: 300, minSwipeDistance: 50}))}
     >
 </div>
 
@@ -315,6 +336,7 @@ async function changeDateToToday () {
     role="textbox"
     onkeydown={() => handleKeyPress(note.index, checkIndex(notes, i + 1), note.indent, note.id, i)}
     bind:textContent={note.note}
+    {...useSwipe(swipeHandler, () => ({timeframe: 300, minSwipeDistance: 50}))}
     >
 </div>
 
