@@ -3,6 +3,8 @@
 import PocketBase from 'pocketbase';
 const pb = new PocketBase('https://db.aarosmit.com');
 
+import { fly } from 'svelte/transition';
+
 let searchTerm = $state(null)
 let results = $state([])
 
@@ -36,7 +38,7 @@ async function changeDate (date) {
 
 <br>
 
-<div style="text-align:center;">
+<div transition:fly={{ y:200, duration: 250 }} style="text-align:center;">
 
 <div>
 <form>

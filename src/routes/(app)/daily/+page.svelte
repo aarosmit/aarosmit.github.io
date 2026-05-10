@@ -6,6 +6,8 @@
 
 import PocketBase from 'pocketbase';
 import { onMount, onDestroy, tick } from 'svelte';
+import { fly } from 'svelte/transition';
+
 import DailySearch from '$lib/components/dailySearch.svelte';
 
 const pb = new PocketBase('https://db.aarosmit.com');
@@ -21,7 +23,7 @@ let prevIndex = 1;
 let search = $state(false)
 
 let password = $state(null);
-let authData = $state(null);
+let authData = $state(1);
 
 async function login () {
     try {
@@ -173,7 +175,7 @@ async function handleKeyPress (curIndex, nextIndex, indent, id, i) {
         selection.removeAllRanges()
         selection.addRange(range);
     }
-    if (event.key === "~") {
+    if (event.key === "`" || event.key === "~") {
         event.preventDefault();
         if (notes[i].done === false) {
             notes[i].done = true
