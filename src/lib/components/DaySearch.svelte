@@ -42,7 +42,7 @@ async function changeDate (date) {
 
 <div>
 <form>
-    <input type="text" bind:value={searchTerm}>
+    <input type="text" autofocus bind:value={searchTerm}>
     <br><br>
     <button style="border:none;font-size:1.1em;padding:0.5em;padding-left:1em;padding-right:1em;border-radius:5px;" type="submit" onclick={() => searchFor()}>SEARCH</button>
 </form>

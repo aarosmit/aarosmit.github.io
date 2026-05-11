@@ -4,11 +4,13 @@
 
 <script>
 
+
+
 import PocketBase from 'pocketbase';
 import { onMount, onDestroy, tick } from 'svelte';
-import { useSwipe } from 'svelte-gestures';
+// import { useSwipe } from 'svelte-gestures';
 
-import DailySearch from '$lib/components/dailySearch.svelte';
+import DaySearch from '$lib/components/DaySearch.svelte';
 
 const pb = new PocketBase('https://db.aarosmit.com');
 
@@ -23,7 +25,7 @@ let prevIndex = 1;
 let search = $state(false)
 
 let password = $state(null);
-let authData = $state(1);
+let authData = $state(null);
 
 async function login () {
     try {
@@ -295,15 +297,27 @@ function swipeHandler () {
 </div>
 
 {#if selectedDate === todayString}
-<button style="font-size:1em;padding:0.5em;padding-left:1em;padding-right:1em;position:fixed;bottom:10%;right:10%;background-color:#84b76680;" onclick={() => changeDateToToday()}>TODAY</button>
+<button style="font-size:1em;height:3em;width:3em;position:fixed;bottom:12%;right:10%;background-color:#84b76680;" onclick={() => changeDateToToday()}>
+    <svg width="20" height="20" fill="black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="m5.56,3.79c0-.31,0-.59,0-.88,0-.52.36-.9.85-.92.5-.02.9.36.92.88.01.28,0,.56,0,.87h5.34c0-.27,0-.53,0-.79,0-.56.37-.95.88-.96.52,0,.89.39.9.97,0,.27,0,.54,0,.77.52.13,1.03.18,1.47.38,1.31.59,2.03,1.65,2.05,3.08.04,2.48.05,4.95,0,7.43-.04,1.9-1.47,3.32-3.39,3.35-3.05.04-6.1.04-9.15,0-1.94-.03-3.35-1.43-3.39-3.37-.05-2.45-.05-4.91,0-7.36.04-1.93,1.33-3.23,3.26-3.41.07,0,.15-.02.26-.03Zm-1.77,5.34c0,.12-.01.22-.01.32,0,1.09,0,2.17,0,3.26,0,.68,0,1.37.06,2.05.06.73.62,1.3,1.34,1.39.45.06.9.07,1.36.07,2.57,0,5.15,0,7.72-.02.39,0,.81-.1,1.15-.27.6-.31.81-.89.81-1.54.01-1.69.02-3.37.02-5.06,0-.06-.01-.12-.02-.2H3.79Zm12.41-1.81c0-.68-.26-1.21-.83-1.5-.3-.16-.68-.23-1.03-.24-2.07-.03-4.14-.03-6.21-.03-.99,0-1.99,0-2.97.07-.8.06-1.41.88-1.32,1.69h12.36Z" stroke-width="0"></path></svg>
+</button>
 {:else}
-<button style="font-size:1em;padding:0.5em;padding-left:1em;padding-right:1em;position:fixed;bottom:10%;right:10%;background-color:#e9e9ed80;" onclick={() => changeDateToToday()}>TODAY</button>
+<button style="font-size:1em;height:3em;width:3em;position:fixed;bottom:12%;right:10%;background-color:#e9e9ed80;" onclick={() => changeDateToToday()}>
+    <svg width="20" height="20" fill="black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="m5.56,3.79c0-.31,0-.59,0-.88,0-.52.36-.9.85-.92.5-.02.9.36.92.88.01.28,0,.56,0,.87h5.34c0-.27,0-.53,0-.79,0-.56.37-.95.88-.96.52,0,.89.39.9.97,0,.27,0,.54,0,.77.52.13,1.03.18,1.47.38,1.31.59,2.03,1.65,2.05,3.08.04,2.48.05,4.95,0,7.43-.04,1.9-1.47,3.32-3.39,3.35-3.05.04-6.1.04-9.15,0-1.94-.03-3.35-1.43-3.39-3.37-.05-2.45-.05-4.91,0-7.36.04-1.93,1.33-3.23,3.26-3.41.07,0,.15-.02.26-.03Zm-1.77,5.34c0,.12-.01.22-.01.32,0,1.09,0,2.17,0,3.26,0,.68,0,1.37.06,2.05.06.73.62,1.3,1.34,1.39.45.06.9.07,1.36.07,2.57,0,5.15,0,7.72-.02.39,0,.81-.1,1.15-.27.6-.31.81-.89.81-1.54.01-1.69.02-3.37.02-5.06,0-.06-.01-.12-.02-.2H3.79Zm12.41-1.81c0-.68-.26-1.21-.83-1.5-.3-.16-.68-.23-1.03-.24-2.07-.03-4.14-.03-6.21-.03-.99,0-1.99,0-2.97.07-.8.06-1.41.88-1.32,1.69h12.36Z" stroke-width="0"></path></svg>
+</button>
 {/if}
 
 {#if search}
-<button style="font-size:1em;padding:0.5em;padding-left:1em;padding-right:1em;position:fixed;bottom:5%;right:10%;background-color:#84b76680;" onclick={() => toggleSearch()}>SEARCH</button>
+<button 
+    style="font-size:1em;height:3em;width:3em;position:fixed;bottom:5%;right:10%;background-color:#84b76680;" 
+    onclick={() => toggleSearch()}>
+    <svg width="20" height="20" fill="black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="m17.74,16.48l-4.54-4.54c.78-1.04,1.24-2.32,1.24-3.72,0-3.44-2.79-6.22-6.22-6.22s-6.22,2.79-6.22,6.22,2.79,6.22,6.22,6.22c1.4,0,2.68-.47,3.72-1.24l4.54,4.54c.35.35.91.35,1.26,0,.35-.35.35-.91,0-1.26ZM3.78,8.22c0-2.45,1.99-4.44,4.44-4.44s4.44,1.99,4.44,4.44-1.99,4.44-4.44,4.44-4.44-1.99-4.44-4.44Z" fill-rule="evenodd" stroke-width="0"></path></svg>
+</button>
 {:else}
-<button style="font-size:1em;padding:0.5em;padding-left:1em;padding-right:1em;position:fixed;bottom:5%;right:10%;background-color:#e9e9ed80;" onclick={() => toggleSearch()}>SEARCH</button>
+<button 
+    style="font-size:1em;height:3em;width:3em;position:fixed;bottom:5%;right:10%;background-color:#e9e9ed80;" 
+    onclick={() => toggleSearch()}>
+    <svg width="20" height="20" fill="black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="m17.74,16.48l-4.54-4.54c.78-1.04,1.24-2.32,1.24-3.72,0-3.44-2.79-6.22-6.22-6.22s-6.22,2.79-6.22,6.22,2.79,6.22,6.22,6.22c1.4,0,2.68-.47,3.72-1.24l4.54,4.54c.35.35.91.35,1.26,0,.35-.35.35-.91,0-1.26ZM3.78,8.22c0-2.45,1.99-4.44,4.44-4.44s4.44,1.99,4.44,4.44-1.99,4.44-4.44,4.44-4.44-1.99-4.44-4.44Z" fill-rule="evenodd" stroke-width="0"></path></svg>
+</button>
 {/if}
 
 <form>
@@ -323,7 +337,7 @@ function swipeHandler () {
     role="textbox"
     onkeydown={() => handleKeyPress(note.index, checkIndex(notes, i + 1), note.indent, note.id, i)}
     bind:textContent={note.note}
-    {...useSwipe(swipeHandler, () => ({timeframe: 300, minSwipeDistance: 50}))}
+    // {...useSwipe(swipeHandler, () => ({timeframe: 300, minSwipeDistance: 50}))}
     >
 </div>
 
@@ -336,7 +350,7 @@ function swipeHandler () {
     role="textbox"
     onkeydown={() => handleKeyPress(note.index, checkIndex(notes, i + 1), note.indent, note.id, i)}
     bind:textContent={note.note}
-    {...useSwipe(swipeHandler, () => ({timeframe: 300, minSwipeDistance: 50}))}
+    // {...useSwipe(swipeHandler, () => ({timeframe: 300, minSwipeDistance: 50}))}
     >
 </div>
 
@@ -364,7 +378,7 @@ function swipeHandler () {
 
 {#if search}
 
-<DailySearch bind:selectedDate={selectedDate} bind:selectedDateArray={selectedDateArray} tzOffset={tzOffset} getNotes={getNotes} />
+<DaySearch bind:selectedDate={selectedDate} bind:selectedDateArray={selectedDateArray} tzOffset={tzOffset} getNotes={getNotes} />
 
 {/if}
 
