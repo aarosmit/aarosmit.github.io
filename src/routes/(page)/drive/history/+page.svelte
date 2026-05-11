@@ -2,6 +2,8 @@
 
 <script>
 
+import { onMount } from 'svelte';
+
 import Highcharts from 'highcharts';
 import { Chart } from '@highcharts/svelte';
 
@@ -14,6 +16,13 @@ let password;
 let authData;
 let error;
 let selector = "odometer"
+
+onMount(async () => {
+
+    if (pb.authStore.isValid) {
+        authData = true
+    } 
+})
 
 async function login () {
     try {

@@ -1,5 +1,5 @@
 <svelte:head>
-    <title>Daily</title> 
+    <title>Day</title> 
 </svelte:head>
 
 <script>
