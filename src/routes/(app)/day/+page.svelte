@@ -34,9 +34,9 @@ async function login () {
     } catch (err) {
         error = err.message
         console.log(err.message)
-    }
+        }
 
-    console.log(authData)
+    // console.log(authData)
 
     // console.log(pb.authStore.isValid);
     // console.log(pb.authStore.token);
@@ -50,6 +50,11 @@ let dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 // $inspect(notes)
 
 onMount(async () => {
+
+    if (pb.authStore.isValid) {
+        authData = true
+    }
+
     await getNotes()
 
     pb.collection('daily').subscribe('*', async (e) => {
@@ -276,6 +281,7 @@ function swipeHandler () {
 {#if !authData}
 
 <div style="text-align:center;position:absolute;bottom:10%;width:100%;">
+    <p>{error}</p>
     <input style="background-color:#e9e9ed;border:none;font-size:1em;border:none;border-radius:5px;" type="password" bind:value={password}>
     <br><br>
     <button style="padding:0.5em;padding-left:1em;padding-right:1em;font-size:1.2em;border:none;border-radius:5px;" onclick={() => login()}>LOGIN</button>
