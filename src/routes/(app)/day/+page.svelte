@@ -11,6 +11,7 @@ import { onMount, onDestroy, tick } from 'svelte';
 // import { useSwipe } from 'svelte-gestures';
 
 import DaySearch from '$lib/components/DaySearch.svelte';
+// import Login from '$lib/components/Login.svelte';
 
 const pb = new PocketBase('https://db.aarosmit.com');
 
@@ -280,12 +281,16 @@ function swipeHandler () {
 
 {#if !authData}
 
+<!-- LOGIN -->
+
 <div style="text-align:center;position:absolute;bottom:10%;width:100%;">
     <p>{error}</p>
     <input style="background-color:#e9e9ed;border:none;font-size:1em;border:none;border-radius:5px;" type="password" bind:value={password}>
     <br><br>
     <button style="padding:0.5em;padding-left:1em;padding-right:1em;font-size:1.2em;border:none;border-radius:5px;" onclick={() => login()}>LOGIN</button>
 </div>
+
+<!-- <Login password={password} error={error} login={login} /> -->
 
 {:else}
 
@@ -395,11 +400,11 @@ function swipeHandler () {
 <style>
 
 div {
-    font-family:'Google Sans';
+    font-family:'Google Sans', sans-serif;
 }
 
 button {
-    font-family:'Google Sans';
+    font-family:'Google Sans', sans-serif;
     border:none;
     border-radius:5px;
     font-weight:bold;

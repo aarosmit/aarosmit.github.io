@@ -267,11 +267,20 @@ $: chartCostOptions = {
 
 {#if !authData}
 
-<div style="text-align:center;">
+<!-- LOGIN -->
+
+<div style="text-align:center;position:absolute;bottom:10%;width:100%;">
+    <p>{error}</p>
+    <input style="background-color:#e9e9ed;border:none;font-size:1em;border:none;border-radius:5px;" type="password" bind:value={password}>
+    <br><br>
+    <button style="padding:0.5em;padding-left:1em;padding-right:1em;font-size:1.2em;border:none;border-radius:5px;" onclick={() => login()}>LOGIN</button>
+</div>
+
+<!-- <div style="text-align:center;">
     <input type="password" bind:value={password}>
     <br><br>
     <button on:click={login}>LOGIN</button>
-</div>
+</div> -->
 
 {:else}
 
@@ -300,8 +309,8 @@ $: chartCostOptions = {
 {/if}
 
 <div style="text-align:center;">
-<button on:click={() => selector = "odometer"}>ODOMETER</button>
-<button on:click={() => selector = "cost"}>COST</button>
+<button onclick={() => selector = "odometer"}>ODOMETER</button>
+<button onclick={() => selector = "cost"}>COST</button>
 <!-- <button on:click={() => selector = "costPerMile"}>COST / MILE</button> -->
 </div>
 
@@ -316,5 +325,21 @@ $: chartCostOptions = {
 {/if}
 
 <style>
+
+div {
+    font-family:'Google Sans', sans-serif;
+}
+
+button {
+    font-family:'Google Sans', sans-serif;
+    border:none;
+    border-radius:5px;
+    font-weight:bold;
+    font-size:1em;
+}
+
+button:hover {
+    background-color: #84b76680;
+}
 
 </style>

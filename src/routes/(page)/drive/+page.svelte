@@ -157,20 +157,20 @@ async function getRecords () {
 
 <tr>
     <td>Date</td>
-    <td style="font-size:1.2em;"><input style="width:8em;" type="date" bind:value={date}></td>
-    <td>{date.toLocaleString()}</td>
+    <td style="font-size:1em;"><input style="width:12em;" type="date" bind:value={date}><br>{date.toLocaleString()}</td>
+    <td></td>
 </tr>
 
 <tr>
     <td>Odometer</td>
-    <td><input type="number" bind:value={odometer} min={prevSelectedRecord.odometer} placeholder={prevSelectedRecord.odometer}></td>
-    <td>Drove {odometer - prevSelectedRecord.odometer || 0} miles</td>
+    <td><input type="number" bind:value={odometer} min={prevSelectedRecord.odometer} placeholder={prevSelectedRecord.odometer}><br>Drove {odometer - prevSelectedRecord.odometer || 0} miles</td>
+    <td></td>
 </tr>
 
 <tr>
     <td>Cost</td>
     <td><input type="number" min=0 bind:value={cost} placeholder={prevSelectedRecord.cost}></td>
-    <td>{cost}</td>
+    <!-- <td>{cost}</td> -->
 </tr>
 
 <tr>
@@ -197,7 +197,7 @@ async function getRecords () {
 
 <h2><a href="{base}/drive/history">Last 30 days</a></h2>
 
-<table style="margin:0px auto;font-family:monospace;font-size:0.9rem;">
+<table style="margin:0px auto;font-family:monospace;font-size:1rem;">
     <thead>
     <tr>
         <th>Vehicle</th>
@@ -212,7 +212,7 @@ async function getRecords () {
             <td style="text-align:center;">{record.vehicle}</td>
             <td style="text-align:center;">{new Date(record.date).toLocaleDateString()}</td>
             <td style="text-align:right;">{record.odometer.toLocaleString()}</td>
-            <td style="text-align:right;">$ {record.cost.toLocaleString()}</td>
+            <td style="text-align:right;">${record.cost.toLocaleString()}</td>
             <td>{record.notes}</td>
         </tr>
     {/each}
@@ -238,6 +238,10 @@ input {
 
 form {
     margin:0px auto;
+}
+
+td {
+    padding:0.2em;
 }
 
 
