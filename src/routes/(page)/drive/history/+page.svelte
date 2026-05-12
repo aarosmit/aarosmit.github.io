@@ -12,10 +12,11 @@ const pb = new PocketBase('https://db.aarosmit.com');
 
 let records;
 $: selectedVehicle = "Fit";
+let selector = "odometer"
+
 let password;
 let authData;
 let error;
-let selector = "odometer"
 
 onMount(async () => {
 

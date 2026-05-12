@@ -14,6 +14,27 @@ import PocketBase from 'pocketbase';
 import { onMount } from 'svelte';
 const pb = new PocketBase('https://db.aarosmit.com');
 
+let password;
+let authData;
+let error;
+
+onMount(async () => {
+
+    if (pb.authStore.isValid) {
+        authData = true
+    } 
+})
+
+async function login () {
+    try {
+        authData = await pb.collection("users").authWithPassword('aaron', password);
+        error = null;
+    } catch (err) {
+        error = err.message
+        console.log(err.message)
+    }
+}
+
 // IF MASS IMPORT NEEDED
 
 // async function importData () {
@@ -60,8 +81,8 @@ let prevCrossRecord;
 let prevFitRecord;
 let prevSelectedRecord;
 let recordSubmitted = false;
-let password;
-let error;
+// let password;
+// let error;
 
 // $: console.log(saveCoords, loggedCoords)
 
@@ -126,6 +147,19 @@ async function getRecords () {
 
 </script>
 
+{#if !authData}
+
+<!-- LOGIN -->
+
+<div style="text-align:center;position:absolute;bottom:10%;width:100%;">
+    <p>{error}</p>
+    <input style="background-color:#e9e9ed;border:none;font-size:1em;border:none;border-radius:5px;" type="password" bind:value={password}>
+    <br><br>
+    <button style="padding:0.5em;padding-left:1em;padding-right:1em;font-size:1.2em;border:none;border-radius:5px;" onclick={() => login()}>LOGIN</button>
+</div>
+
+{:else}
+
 <Geolocation getPosition bind:coords />
 
 <h1>Driving</h1>
@@ -144,13 +178,13 @@ async function getRecords () {
 <tr>
     {#if selectedVehicle === "Cross"}
     <td colspan="3" style="text-align:center;">
-        <button on:click={() => selectedVehicle = "Cross"}><b>Cross</b></button>
-        <button on:click={() => selectedVehicle = "Fit"}>Fit</button>
+        <button onclick={() => selectedVehicle = "Cross"}><b>Cross</b></button>
+        <button onclick={() => selectedVehicle = "Fit"}>Fit</button>
     </td>
     {:else}
     <td colspan="3" style="text-align:center;">
-        <button on:click={() => selectedVehicle = "Cross"}>Cross</button>
-        <button on:click={() => selectedVehicle = "Fit"}><b>Fit</b></button>
+        <button onclick={() => selectedVehicle = "Cross"}>Cross</button>
+        <button onclick={() => selectedVehicle = "Fit"}><b>Fit</b></button>
         </td>
     {/if}
 </tr>
@@ -185,7 +219,7 @@ async function getRecords () {
 
 </tbody></table>
 
-<p style="text-align:center;"><button type="submit" on:click={createRecord(newRecord)}>Submit</button></p>
+<p style="text-align:center;"><button type="submit" onclick={createRecord(newRecord)}>Submit</button></p>
 
 {#if recordSubmitted}
 
@@ -225,15 +259,17 @@ async function getRecords () {
     
 {/await}
 
+{/if}
+
 <style>
 
 button {
-    font-size:1em;
+    font-size:1.2em;
     width: 6em;
 }
 
 input {
-    font-size:1em;
+    font-size:1.2em;
 }
 
 form {
