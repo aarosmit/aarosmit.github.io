@@ -162,7 +162,7 @@ async function getRecords () {
 
 <Geolocation getPosition bind:coords />
 
-<h1>Driving</h1>
+<h1>Log drive</h1>
 
 {#await getRecords()}
 
@@ -178,13 +178,13 @@ async function getRecords () {
 <tr>
     {#if selectedVehicle === "Cross"}
     <td colspan="3" style="text-align:center;">
-        <button onclick={() => selectedVehicle = "Cross"}><b>Cross</b></button>
+        <button style="background-color: #84b76680;" onclick={() => selectedVehicle = "Cross"}><b>Cross</b></button>
         <button onclick={() => selectedVehicle = "Fit"}>Fit</button>
     </td>
     {:else}
     <td colspan="3" style="text-align:center;">
         <button onclick={() => selectedVehicle = "Cross"}>Cross</button>
-        <button onclick={() => selectedVehicle = "Fit"}><b>Fit</b></button>
+        <button style="background-color: #84b76680;" onclick={() => selectedVehicle = "Fit"}><b>Fit</b></button>
         </td>
     {/if}
 </tr>
