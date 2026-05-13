@@ -151,7 +151,7 @@ async function getRecords () {
 
 <!-- LOGIN -->
 
-<div style="text-align:center;position:absolute;bottom:10%;width:100%;">
+<div style="text-align:center;position:fixed;bottom:10%;width:100%;">
     <p>{error}</p>
     <input style="background-color:#e9e9ed;border:none;font-size:1em;border:none;border-radius:5px;" type="password" bind:value={password}>
     <br><br>
@@ -170,7 +170,7 @@ async function getRecords () {
     
 {:then records} 
 
-<form style="height:90vh;">
+<form style="position:fixed;bottom:10%;">
 
 <table style="margin:0px auto;">
 <tbody>
@@ -191,7 +191,7 @@ async function getRecords () {
 
 <tr>
     <td>Date</td>
-    <td style="font-size:1em;"><input style="width:12em;" type="date" bind:value={date}><br>{date.toLocaleString()}</td>
+    <td style="font-size:1em;"><input style="width:12.5em;" type="date" bind:value={date}><br>{date.toLocaleString()}</td>
     <td></td>
 </tr>
 
