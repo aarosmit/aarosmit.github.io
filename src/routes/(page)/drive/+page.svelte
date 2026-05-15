@@ -70,6 +70,7 @@ async function login () {
 let records;
 let selectedVehicle = "Cross";
 let date = new Date()
+$: selectedDate = date
 let oneMonthAgo = new Date(date - 2592000000).toISOString()
 let odometer;
 let cost;
@@ -100,12 +101,20 @@ $: if (selectedVehicle === "Cross") {
 
 $: newRecord = {
     vehicle: selectedVehicle,
-    date: date,
+    date: selectedDate,
     odometer: odometer,
     cost: cost,
     location: loggedCoords,
     notes: notes
 }
+
+$: console.log(newRecord)
+
+$: if (date.length === 10) {
+        selectedDate = date + "T12:00:00"
+    } else {
+        selectedDate = date
+    }
 
 async function createRecord (record) {
     await pb.collection('vehicles').create(record);
