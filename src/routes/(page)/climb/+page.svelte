@@ -78,6 +78,8 @@ async function createRecord (record) {
 
 <h1>Log climb</h1>
 
+<form style="position:fixed;bottom:10%;">
+
 <table style="margin:0px auto;">
     <tbody>
         <tr>
@@ -108,3 +110,5 @@ async function createRecord (record) {
 <p style="text-align:center;">Record submitted!</p>
 
 {/if}
+
+</form>
