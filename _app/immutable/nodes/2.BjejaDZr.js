@@ -1,0 +1,1 @@
+import{A as e,K as t,Q as n,S as r,j as i,k as a,m as o,y as s}from"../chunks/CQfaer_X.js";import"../chunks/5BMAVWpC.js";import"../chunks/DEggy0fl.js";import{t as c}from"../chunks/BzEp2KDt.js";var l=i(`<link rel="icon"/>`);function u(i,u){var d=e();s(`1v2axqk`,e=>{var n=l();t(()=>o(n,`href`,c)),a(e,n)}),r(n(d),()=>u.children),a(i,d)}export{u as component};
