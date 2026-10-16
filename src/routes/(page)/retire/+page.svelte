@@ -30,10 +30,6 @@ let stockPercentage = null
 let bondPercentage = null
 let cashPercentage = null
 
-
-
-
-
 onMount(() => {
     ageCurrent = 1 * page.url.searchParams.get('ageCurrent') || 30;
     ageCurrent = 1 * page.url.searchParams.get('ageCurrent') || 30;
@@ -122,6 +118,7 @@ let allSims = [];
 let allGrowth = [];
 let allContributions = {name: 'Contributions', type: 'column', opacity: 0.5, color: 'green', data: []}
 let allWithdrawals = {name: 'Withdrawals', type: 'column', opacity: 0.5, color: 'red', data: []}
+let medianGrowth = {name: 'Median', type: 'line', opacity: 1, color: 'red', data: []}
 
 let simsRan = 0;
 let simsSucceeded = 0;
@@ -139,7 +136,7 @@ if (!stock || !bond || stockPercentage + bondPercentage + cashPercentage != 100)
     simsRan = 0;
     simsSucceeded = 0;
     simsFailed = 0;
-    while (j < 1000) {
+    while (j < 100) {
         allGrowth.push({type: 'line', data: [currentRetireNum]})
         allContributions.data = [0]
         allWithdrawals.data = [0]
@@ -217,6 +214,14 @@ if (!stock || !bond || stockPercentage + bondPercentage + cashPercentage != 100)
     console.log(allSims)
     console.log(simsRan, simsSucceeded, simsFailed)
 
+    for (let i = 0; i < 2; i++) {
+        for (let j = 0; j < allGrowth.length; j++) {
+            let yearValue = allGrowth[j].data[i]
+            console.log(yearValue)
+        }
+
+    }
+
 }
 
 // CHART OPTIONS
@@ -264,7 +269,7 @@ $: chartOptions = {
             </tr>
             <tr>
                 <td>Current retirement funds</td>
-                <td style="width:15em;"><input style="width:95%;" type="range" min="0" max="3000000" step="100000" name="currentRetireNum" required bind:value={currentRetireNum}></td>
+                <td style="width:15em;"><input style="width:95%;" type="range" min="0" max="3000000" step="50000" name="currentRetireNum" required bind:value={currentRetireNum}></td>
                 <td>${currentRetireNum.toLocaleString()}</td>
             </tr>
             <tr>
@@ -298,7 +303,7 @@ $: chartOptions = {
                 <td>{ageFinal}</td>
             </tr>
             <tr>
-                <td>Market Adjustment (%)</td>
+                <td>Market adjustment (%)</td>
                 <td style="width:15em;"><input style="width:95%;" type="range" min="-10" max="10" name="marketAdjustment" required bind:value={marketAdjustment}></td>
                 <td>{marketAdjustment}%</td>
             </tr>
@@ -330,6 +335,9 @@ $: chartOptions = {
                 </td>
                 <td style="width:15em;"><input style="width:95%;" type="range" min="0" max="100" step="5" name="bondPercentage" required bind:value={bondPercentage}></td>
                 <td>{bondPercentage}%</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;" colspan="3">Large contributions or withdrawals</td>
             </tr>
             {#each largeTransfers as transfer, index}
             <tr>

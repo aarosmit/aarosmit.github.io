@@ -8,7 +8,7 @@ import { fly } from 'svelte/transition';
 let searchTerm = $state(null)
 let results = $state([])
 
-let { selectedDate = $bindable(), selectedDateArray = $bindable(), tzOffset, getNotes } = $props()
+let { selectedDate = $bindable(), selectedDateArray = $bindable(), tzOffset, getNotes, search = $bindable() } = $props()
 
 async function searchFor () {
     let records = await pb.collection('notes').getFullList({
@@ -32,6 +32,7 @@ async function changeDate (date) {
     selectedDateArray = newDay.toString().split(' ')
     console.log(selectedDate, selectedDateArray)
     await getNotes()
+    // search = false
 }
 
 </script>

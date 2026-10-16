@@ -344,7 +344,7 @@ function swipeHandler () {
 {#if note.saved === "no"}
 
 <div contenteditable 
-    style="width:{97 - note.indent * 5}%;min-height:1.6em;display:flex;align-items:flex-end;border-top:none;border-left:none;border-right:none;border-bottom:1px solid #C0C0C0;overflow-wrap:break-word;margin-left:{note.indent * 5}%;background:#FFFDD0;padding-left:0.25em;padding-right:0.25em;font-weight:{checkIndent(note.indent)};color:{checkDone(note.done)};font-family:'Google Sans'"
+    style="width:{97 - note.indent * 5}%;min-height:1.6em;display:flex;align-items:flex-end;border-top:none;border-left:none;border-right:none;border-bottom:1px solid #C0C0C0;overflow-wrap:break-word;margin-left:{note.indent * 5}%;background:#FFFDD0;padding-left:0.25em;padding-right:0.25em;font-weight:{checkIndent(note.indent)};color:{checkDone(note.done)};"
     role="textbox"
     onkeydown={() => handleKeyPress(note.index, checkIndex(notes, i + 1), note.indent, note.id, i)}
     bind:textContent={note.note}
@@ -357,7 +357,7 @@ function swipeHandler () {
 <!-- <div style="width:2%;min-height:1.5em;display:flex;align-items:flex-start;"></div> -->
 
 <div contenteditable 
-    style="width:{97 - note.indent * 5}%;min-height:1.5em;display:flex;align-items:flex-end;border-top:none;border-left:1px solid #C0C0C0;border-right:none;border-bottom:1px solid #C0C0C0;overflow-wrap:break-word;margin-left:{note.indent * 5}%;padding-left:0.25em;padding-right:0.25em;padding-top:0.25em;background-color:rgba(0,0,0,{note.indent * 0.02});font-weight:{checkIndent(note.indent)};color:{checkDone(note.done)};font-family:'Google Sans'"
+    style="width:{97 - note.indent * 5}%;min-height:1.5em;display:flex;align-items:flex-end;border-top:none;border-left:1px solid #C0C0C0;border-right:none;border-bottom:1px solid #C0C0C0;overflow-wrap:break-word;margin-left:{note.indent * 5}%;padding-left:0.25em;padding-right:0.25em;padding-top:0.25em;background-color:rgba(0,0,0,{note.indent * 0.02});font-weight:{checkIndent(note.indent)};color:{checkDone(note.done)};"
     role="textbox"
     onkeydown={() => handleKeyPress(note.index, checkIndex(notes, i + 1), note.indent, note.id, i)}
     bind:textContent={note.note}
@@ -389,7 +389,7 @@ function swipeHandler () {
 
 {#if search}
 
-<DaySearch bind:selectedDate={selectedDate} bind:selectedDateArray={selectedDateArray} tzOffset={tzOffset} getNotes={getNotes} />
+<DaySearch bind:selectedDate={selectedDate} bind:selectedDateArray={selectedDateArray} tzOffset={tzOffset} getNotes={getNotes} bind:search={search} />
 
 {/if}
 
