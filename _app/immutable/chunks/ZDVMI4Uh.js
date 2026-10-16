@@ -1,1 +1,0 @@
-import{ft as e}from"./CQfaer_X.js";e();
