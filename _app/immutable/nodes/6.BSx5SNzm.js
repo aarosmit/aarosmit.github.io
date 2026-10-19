@@ -1,0 +1,1 @@
+import{C as e,Y as t,bt as n,c as r,i,tt as a,yt as o}from"../chunks/D4HaZDLH.js";import"../chunks/xihTtKlq.js";import"../chunks/DMOO_NjM.js";function s(s,c){n(c,!1),i(async()=>{let e=await(await fetch(`https://api.sleeper.app/v1/league/1389296169221386240/matchups/3`)).json();console.log(e)}),r(),e(`11w147c`,e=>{t(()=>{a.title=`Footballs`})}),o()}export{s as component};
