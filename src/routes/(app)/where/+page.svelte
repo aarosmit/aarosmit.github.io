@@ -19,6 +19,7 @@ maplibregl.setWorkerUrl(maplibreWorkerUrl);
   import LineLayer from 'svelte-maplibre/LineLayer.svelte';
   import Marker from 'svelte-maplibre/Marker.svelte';
   import DefaultMarker from 'svelte-maplibre/DefaultMarker.svelte';
+  import CircleLayer from 'svelte-maplibre/CircleLayer.svelte';
 
 import { LineChart, defaultChartPadding } from 'layerchart';
 // import { createDateSeries } from '$lib/utils/data.js';
@@ -36,6 +37,7 @@ $: password = null;
 $: authData = null;
 $: error = null;
 
+$: showAltitude = false
 
 $: now = new Date() * 1 / 1000
 $: oneDayAgo = (new Date() * 1 - 86400000) / 1000
@@ -47,6 +49,8 @@ $: startString = new Date(new Date() * 1 - 86400000 * 7).toISOString().split('T'
 
 $: start = new Date(startString) / 1000 + new Date().getTimezoneOffset() * 60
 $: end = new Date(endString) / 1000 + 86400 + new Date().getTimezoneOffset() * 60
+
+
 
 async function login () {
     try {
@@ -74,16 +78,16 @@ onMount(async () => {
 
 // let data = $state(null)
 
-$: data = {
-    type: 'Feature',
-    properties: {
-        name: 'Test'
-    },
-    geometry: {
-        type: 'MultiPoint',
-        coordinates: []
-    }
-}
+// $: data = {
+//     type: 'Feature',
+//     properties: {
+//         name: 'Test'
+//     },
+//     geometry: {
+//         type: 'MultiPoint',
+//         coordinates: []
+//     }
+// }
 
 $: pointData = []
 
@@ -94,20 +98,62 @@ $: maxLon = -1000
 
 $: dataBounds = []
 
+$: data = {
+  "type": "FeatureCollection",
+  "features": []
+}
+
+$: altitudeData = []
+
+$: accuracyData = []
+
+$: console.log(start, end, data)
+
 async function getGPSData (startDate, endDate) {
+    data = {
+      "type": "FeatureCollection",
+      "features": []
+    }
+    altitudeData = []
+    accuracyData = []
     let resultList = await pb.collection('gps').getFullList({
         filter: `tst >= "${startDate}" && tst <= "${endDate}"`,
         sort: "tst"
     });
-    data.geometry.coordinates = []
+    console.log(resultList)
     minLat = 1000
     maxLat = -1000
     minLon = 1000
     maxLon = -1000
     for (let i = 0; i < resultList.length; i++) {
-        resultList[i].date = new Date(resultList[i].tst * 1000)
-        resultList[i].value = resultList[i].alt * 3.28084
-        data.geometry.coordinates.push([resultList[i].lon, resultList[i].lat])
+        resultList[i].date = new Date(resultList[i].tst * 1000).toISOString()
+        resultList[i].alt = resultList[i].alt * 3.28084
+
+        if (resultList[i].alt < 0) {
+          continue
+        } else {
+          altitudeData.push({
+            date: resultList[i].date,
+            value: Math.round(resultList[i].alt)
+          })
+        }
+
+        accuracyData.push({
+          date: resultList[i].date,
+          value: resultList[i].acc
+        })
+
+        data.features.push({
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [resultList[i].lon, resultList[i].lat]
+          },
+          "properties": {
+            "name": new Date(resultList[i].tst * 1000).toLocaleString()
+          }
+        })
+
         if (resultList[i].lat < minLat) {
           minLat = resultList[i].lat
         }
@@ -123,13 +169,11 @@ async function getGPSData (startDate, endDate) {
 
         pointData.push({
           lngLat: [resultList[i].lon, resultList[i].lat],
-          label: 'asdf',
+          label: new Date(resultList[i].tst * 1000).toLocaleString(),
           name: 'asdf'
         })
 
     }
-
-    console.log(pointData)
 
     dataBounds[0] = minLon - 0.1
     dataBounds[1] = minLat - 0.1
@@ -137,7 +181,6 @@ async function getGPSData (startDate, endDate) {
     dataBounds[3] = maxLat + 0.1
     
     // data = resultList
-    // console.log(data)
 }
 
 </script>
@@ -179,23 +222,36 @@ async function getGPSData (startDate, endDate) {
   bounds={[minLon - 0.05, minLat - 0.05, maxLon + 0.05, maxLat + 0.05]}
 >
  <GeoJSON id="test" {data}>
-    <!-- <LineLayer
-      layout={{ 'line-cap': 'round', 'line-join': 'round' }}
-      paint={{
-        'line-width': 5,
-        'line-color': '#008800',
-        'line-opacity': 0.8,
-      }}
-    /> -->
+    <CircleLayer
+			paint={{
+				'circle-radius': 5,
+				'circle-color': "#7189ea",
+				'circle-stroke-width': 0,
+				'circle-stroke-color': '#ffffff'
+			}} 
+    />
  </GeoJSON>
-  {#each pointData as {lngLat}}
+  <!-- {#each pointData as {lngLat, label}}
     <Marker
       {lngLat}
       class="asdf"
+      color="red"
     >
     </Marker>
-  {/each}
+    <DefaultMarker {lngLat}>
+
+    </DefaultMarker>
+  {/each} -->
 </MapLibre>
+
+{#if showAltitude}
+
+<div>
+
+    <LineChart data={altitudeData} x="date" y="value" padding={defaultChartPadding({ right: 10 })} height={300}/>
+</div>
+
+{/if}
 
 </div>
     
@@ -209,10 +265,19 @@ End <input type="date" bind:value={endString}>
 
 </p>
 
-<!-- <div>
+{#if !showAltitude}
 
-    <LineChart {data} x="date" y="value" padding={defaultChartPadding({ right: 10 })} height={300}/>
-</div> -->
+<button onclick={() => showAltitude = true}>Show altitude</button>
+
+{:else}
+
+<button onclick={() => showAltitude = false}>Hide altitude</button>
+
+{/if}
+
+<br>
+
+
 
 
 
@@ -221,20 +286,20 @@ End <input type="date" bind:value={endString}>
 
 <style>
     :global(.map) {
-        height: 90vh;
+        height: 80vh;
         width: 100%;
     }
 
     :global(.asdf) {
         display: grid;
-        height: 0.5rem;       /* h-8 (32px) */
-        width: 0.5rem;        /* w-8 (32px) */
-        place-items: center; /* place-items-center */
-        border-radius: 9999px; /* rounded-full */
-        border-width: 0px;  /* border */
+        height: 0.5rem;
+        width: 0.5rem;
+        place-items: center;
+        border-radius: 9999px;
+        border-width: 0px;
         border-style: solid;
-        background-color: #7189ea; /* bg-red-300 */
-        color: #000000;     /* text-black */
+        /* background-color: #7189ea; */
+        color: #000000;
     }
 </style>
 
